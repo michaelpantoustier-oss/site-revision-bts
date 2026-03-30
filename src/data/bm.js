@@ -1,5 +1,6 @@
 // ─── BTS Biologie Médicale — première session 2027 ───
 // Nouveau BTS rénové remplaçant progressivement le BTS ABM
+import { FICHES_PC, QUIZ_THEMES_PC } from "./phys_chim.js";
 const T={accent:"#4AEAAC",blue:"#5EB5FF",orange:"#FFB259",red:"#FF6370",pink:"#FF5DA0",text2:"#A199B2"};
 
 // ─── BANQUES DE QUESTIONS ───
@@ -143,6 +144,7 @@ export const FICHES_BM = [
     contenu:"**Prélèvements bactériologiques :**\n• Hémocultures : avant ATB, 2-3 paires aéro-anaérobies → détection CO₂ (BACTEC/BacT-Alert)\n• ECBU : leucocyturie ≥ 10⁴/mL + bactériurie ≥ 10⁵ UFC/mL (mi-jet, < 2h)\n• LCR urgent : cytologie + biochimie (glucose/protéines) + Gram + culture\n\n**Résistances bactériennes :**\n• SARM : gène mecA/mecC → PLP2a → résistance toutes bêtalactamines\n• BLSE : enzyme plasmidique hydrolysant C3G → test synergie (double disque)\n• EPC / KPC : carbapénémase hydrolysant les carbapénèmes → urgence infectieuse\n• Détection : phénotypique + confirmation moléculaire (PCR mecA, KPC…)\n\n**Antibiogramme et EUCAST :**\n• Méthode diffusion disque sur Mueller-Hinton → diamètre → catégories S/I/R\n• EUCAST : référentiel européen (CA-SFM), mis à jour annuellement\n• 'I' = sensible pour posologie forte (remplace 'intermédiaire')\n\n**Diagnostic moléculaire :**\n• PCR 16S ARNr : identification universelle bactéries non cultivables\n• Xpert MTB/RIF : détecte M. tuberculosis + résistance rifampicine en 2h\n• Sérologie VIH 4e génération : Ag p24 + Ac anti-VIH (fenêtre sérologique ~18j)\n\n**Mycobactériologie :**\n• Tuberculose : examen direct (Ziehl-Neelsen), culture Löwenstein-Jensen (3-6 sem) ou MGIT (2-3 sem), Xpert MTB/RIF\n• MDR-TB = résistance INH + rifampicine"}
   ,{id:"bm_f9",title:"Génétique médicale : diagnostic et oncogénétique",bloc:"Bloc 2",tags:["Génétique","Caryotype","FISH","NGS","BRCA","Lynch","Pharmacogénomique","ddPCR"],duree:22,niveau:"Avancé",qbank:"bm_genetique",
     contenu:"**Analyses chromosomiques :**\n• Caryotype : lymphocytes → culture 72h (PHA) → colcémide → coloration GTG → bandes\n• FISH : sondes fluorescentes sur noyaux en interphase ou métaphase → anomalies ciblées\n  (BCR-ABL/LMC, HER2 amplification, t(14;18)/lymphome folliculaire)\n\n**Maladies génétiques courantes :**\n• Trisomie 21 : 95% non-disjonction méiotique (47,+21) → DPNI en dépistage\n• Mucoviscidose : CFTR (F508del 70%), AR → test sueur Cl⁻ > 60 mmol/L\n• DPNI : ADN fœtal libre (cffDNA) dans sang maternel → Se > 99% T21/T18/T13\n\n**Oncogénétique :**\n• BRCA1/2 : syndrome HBOC → cancer sein (60-80%), ovaire (40-60%) → inhibiteurs PARP\n• Lynch/HNPCC : mutations MMR (MLH1, MSH2, MSH6, PMS2) → instabilité microsatellitaire (MSI)\n• MSI-H sur tumeur : prédictif réponse aux anti-PD1 (pembrolizumab)\n\n**Séquençage de nouvelle génération (NGS) :**\n• Panels oncologiques : mutations somatiques actionnables (EGFR, BRAF, KRAS, ALK, HER2)\n• Médecine de précision : thérapies ciblées guidées par le profil moléculaire tumoral\n• ddPCR : quantification ultra-sensible (ctDNA, MRD) → détecte 0.01% d'allèles mutés\n\n**Pharmacogénomique :**\n• CYP2D6 : métaboliseurs lents (accumulation) vs ultra-rapides (sous-dosage)\n  → codéine chez MU → morphine excessive → dépression respiratoire\n• DPYD, TPMT, UGT1A1 : toxicités chimiothérapies (5-FU, mercaptopurine, irinotécan)\n\n**Réglementation :**\n• Test génétique constitutionnel : consentement écrit + conseil génétique (médecin habilité)"}
+  ,...FICHES_PC
 ];
 
 // ─── QUIZ THEMES ───
@@ -155,6 +157,7 @@ export const QUIZ_THEMES_BM = [
   ,{id:"qt-bm-immunopath",title:"Immunopathologie & auto-anticorps",tags:["AAN","Anti-ADN","Lupus","PR","Anti-CCP","ANCA","Complément"],bank:QB_BM_IMMUNOPATH,ficheId:"bm_f7",color:T.blue}
   ,{id:"qt-bm-micro_bm",title:"Microbiologie clinique : résistances & diagnostic",tags:["SARM","BLSE","EPC","Hémocultures","EUCAST","Tuberculose","VIH"],bank:QB_BM_MICRO_BM,ficheId:"bm_f8",color:T.orange}
   ,{id:"qt-bm-genetique",title:"Génétique médicale & oncogénétique",tags:["Caryotype","FISH","NGS","BRCA","Lynch","MSI","Pharmacogénomique"],bank:QB_BM_GENETIQUE,ficheId:"bm_f9",color:T.accent}
+  ,...QUIZ_THEMES_PC
 ];
 
 // ─── PROGRAMME ───
