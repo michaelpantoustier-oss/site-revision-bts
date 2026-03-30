@@ -7,6 +7,8 @@ import { PROGRAM_BM } from "./data/bm.js";
 import { PROGRAM_PRODENT } from "./data/prodent.js";
 import { FICHES_PC, QUIZ_THEMES_PC } from "./data/phys_chim.js";
 import { ENGLISH_VOCAB, ENGLISH_LISTENING } from "./data/english.js";
+import { syncStudent, logQuiz, logFiche } from "./lib/supabase.js";
+import AdminDashboard from "./AdminDashboard.jsx";
 
 /* ═══════════════════════════════════════════════════════════════
    PICPUS HOUSE — PLATEFORME RÉVISIONS BTS
@@ -565,9 +567,13 @@ export default function App(){
   const[activeQuizTheme,setAQT]=useState(null);
   const[quizMode,setQM]=useState(null);
   const[qState,setQS]=useState(null);
+  const[showAdmin,setShowAdmin]=useState(false);
 
   const prog=PROGRAMS.find(p=>p.id===pid);
   const totalQ=prog.quizThemes.reduce((a,t)=>a+t.bank.length,0);
+
+  // Sync étudiant à Supabase à chaque changement de filière
+  useEffect(()=>{if(studentName)syncStudent(studentName,pid);},[studentName,pid]);
 
   const switchProg=(id)=>{setPid(id);setSec("referentiel");setSearch("");setAF(null);setAQT(null);setQM(null);setQS(null)};
   const switchSec=(id)=>{setSec(id);setAF(null);setAQT(null);setQM(null);setQS(null)};
@@ -583,6 +589,7 @@ export default function App(){
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:#07060B}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:${T.text3}30;border-radius:3px}::selection{background:${T.accent}40}input::placeholder{color:${T.text3}}@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes fi{from{opacity:0}to{opacity:1}}.hl{transition:transform .2s,box-shadow .2s,border-color .2s}.hl:hover{transform:translateY(-2px);border-color:${T.accent}30!important}.qo{transition:all .15s;cursor:pointer}.qo:hover:not([disabled]){transform:translateX(4px);border-color:${T.accent}40!important}`}</style>
 
       {!studentName&&<WelcomeModal onConfirm={n=>setStudentName(n)}/>}
+      {showAdmin&&<AdminDashboard onClose={()=>setShowAdmin(false)}/>}
 
       {/* HEADER */}
       <header style={{position:"sticky",top:0,zIndex:100,background:`#07060BE0`,backdropFilter:"blur(24px)",borderBottom:`1px solid ${T.border}`}}>
@@ -592,6 +599,7 @@ export default function App(){
             <div style={{flex:1}}><div style={{fontWeight:800,fontSize:15.5,letterSpacing:-.3}}>Picpus House</div><div style={{fontSize:9,color:T.text3,fontWeight:700,letterSpacing:2,textTransform:"uppercase"}}>Plateforme Révisions BTS · {totalQ} questions</div></div>
             <div style={{position:"relative",width:200}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Rechercher…" style={{width:"100%",padding:"9px 14px 9px 32px",borderRadius:10,border:`1px solid ${T.border2}`,background:T.surface,color:T.text,fontSize:12,outline:"none"}}/><span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:12,opacity:.35}}>🔍</span></div>
             {studentName&&<StudentBadge name={studentName} onChangeName={()=>setStudentName(null)}/>}
+            <button onClick={()=>setShowAdmin(true)} title="Administration" style={{width:32,height:32,borderRadius:9,border:`1px solid ${T.border}`,background:T.surface,color:T.text3,cursor:"pointer",fontSize:15,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>🔐</button>
           </div>
           <div style={{display:"flex",gap:3,overflowX:"auto"}}>{PROGRAMS.map(p=><button key={p.id} onClick={()=>switchProg(p.id)} style={{padding:"7px 14px",borderRadius:9,border:pid===p.id?`1.5px solid ${p.color}50`:"1.5px solid transparent",background:pid===p.id?`${p.color}12`:"transparent",color:pid===p.id?p.color:T.text3,fontSize:11.5,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}><span style={{marginRight:4}}>{p.icon}</span>{p.short}</button>)}</div>
         </div>
@@ -612,10 +620,10 @@ export default function App(){
         {pid!=="english"&&<>
           {sec==="referentiel"&&<RefView prog={prog} search={search}/>}
           {sec==="fiches"&&!activeFiche&&<FichesList prog={prog} search={search} done={completed} onPick={setAF}/>}
-          {sec==="fiches"&&activeFiche&&<FicheDetail f={activeFiche} c={prog.color} isDone={!!completed[`${pid}-${activeFiche.id}`]} onDone={()=>setCompleted(p=>({...p,[`${pid}-${activeFiche.id}`]:Date.now()}))} onBack={()=>setAF(null)} onQuiz={(themeId)=>{const t=prog.quizThemes.find(x=>x.ficheId===themeId);if(t){setAQT(t);setSec("quiz");setAF(null)}}}/>}
+          {sec==="fiches"&&activeFiche&&<FicheDetail f={activeFiche} c={prog.color} isDone={!!completed[`${pid}-${activeFiche.id}`]} onDone={()=>{setCompleted(p=>({...p,[`${pid}-${activeFiche.id}`]:Date.now()}));if(studentName)logFiche(studentName,pid,activeFiche.id,activeFiche.title);}} onBack={()=>setAF(null)} onQuiz={(themeId)=>{const t=prog.quizThemes.find(x=>x.ficheId===themeId);if(t){setAQT(t);setSec("quiz");setAF(null)}}}/>}
           {sec==="quiz"&&!activeQuizTheme&&<QuizHub prog={prog} search={search} res={qResults} onPickTheme={setAQT}/>}
           {sec==="quiz"&&activeQuizTheme&&!qState&&<QuizModeSelect theme={activeQuizTheme} onStart={(mode)=>startQuiz(activeQuizTheme,mode)} onBack={()=>setAQT(null)}/>}
-          {sec==="quiz"&&activeQuizTheme&&qState&&<QuizPlay quiz={activeQuizTheme} mode={quizMode} s={qState} setS={setQS} c={activeQuizTheme.color||prog.color} onDone={(sc,tot)=>setQResults(p=>{const k=`${pid}-${activeQuizTheme.id}-${quizMode.id}`;const prev=p[k];return{...p,[k]:{sc,tot,at:Date.now(),best:Math.max(sc,prev?.best||0),attempts:(prev?.attempts||0)+1}}})} onBack={()=>{setQS(null);setQM(null)}} onBackToThemes={()=>{setQS(null);setQM(null);setAQT(null)}}/>}
+          {sec==="quiz"&&activeQuizTheme&&qState&&<QuizPlay quiz={activeQuizTheme} mode={quizMode} s={qState} setS={setQS} c={activeQuizTheme.color||prog.color} onDone={(sc,tot)=>{setQResults(p=>{const k=`${pid}-${activeQuizTheme.id}-${quizMode.id}`;const prev=p[k];return{...p,[k]:{sc,tot,at:Date.now(),best:Math.max(sc,prev?.best||0),attempts:(prev?.attempts||0)+1}}});if(studentName)logQuiz(studentName,pid,activeQuizTheme.id,activeQuizTheme.title,quizMode.id,sc,tot);}} onBack={()=>{setQS(null);setQM(null)}} onBackToThemes={()=>{setQS(null);setQM(null);setAQT(null)}}/>}
           {sec==="annales"&&<AnnView prog={prog} search={search}/>}
           {sec==="progression"&&<ProgView prog={prog} pid={pid} done={completed} qr={qResults}/>}
         </>}
