@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import { PROGRAM_ABM } from "./data/abm.js";
 import { PROGRAM_OL } from "./data/ol.js";
@@ -487,13 +487,80 @@ const PROGRAMS=[
 
 const SECTIONS=[{id:"referentiel",label:"Référentiel",icon:"📋"},{id:"fiches",label:"Fiches",icon:"📝"},{id:"quiz",label:"Quiz",icon:"🎯"},{id:"annales",label:"Annales",icon:"📚"},{id:"progression",label:"Progression",icon:"📊"}];
 
+// ─── PERSISTANCE LOCALE ───
+function useLS(key,def){
+  const[v,setV]=useState(()=>{try{const s=localStorage.getItem(key);return s!==null?JSON.parse(s):def;}catch{return def;}});
+  const save=useCallback((val)=>{setV(prev=>{const next=typeof val==="function"?val(prev):val;try{localStorage.setItem(key,JSON.stringify(next));}catch{}return next;});},[key]);
+  return[v,save];
+}
+
+function WelcomeModal({onConfirm}){
+  const[name,setName]=useState("");
+  const ok=()=>{const n=name.trim();if(n)onConfirm(n);};
+  return(
+    <div style={{position:"fixed",inset:0,background:"#07060BDD",backdropFilter:"blur(12px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div style={{background:"#12101A",border:"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"40px 36px",maxWidth:420,width:"100%",animation:"fu .3s"}}>
+        <div style={{fontSize:40,marginBottom:16,textAlign:"center"}}>🎓</div>
+        <h2 style={{fontSize:22,fontWeight:800,marginBottom:8,textAlign:"center"}}>Bienvenue sur Picpus House</h2>
+        <p style={{color:"#A199B2",fontSize:13.5,textAlign:"center",marginBottom:28,lineHeight:1.6}}>Pour suivre ta progression entre tes sessions de révision, entre ton prénom.</p>
+        <input
+          autoFocus
+          value={name}
+          onChange={e=>setName(e.target.value)}
+          onKeyDown={e=>e.key==="Enter"&&ok()}
+          placeholder="Ton prénom…"
+          style={{width:"100%",padding:"13px 16px",borderRadius:12,border:"1.5px solid rgba(255,255,255,0.12)",background:"#1C1828",color:"#fff",fontSize:15,outline:"none",marginBottom:16,fontFamily:"inherit"}}
+        />
+        <button onClick={ok} disabled={!name.trim()} style={{width:"100%",padding:"13px",borderRadius:12,background:name.trim()?"linear-gradient(135deg,#C57AFF,#902EDB)":"#2A2535",color:name.trim()?"#fff":"#6B6280",fontSize:15,fontWeight:700,border:"none",cursor:name.trim()?"pointer":"default",transition:"all .2s"}}>
+          Commencer les révisions →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function StudentBadge({name,onChangeName}){
+  const[open,setOpen]=useState(false);
+  const initials=name.slice(0,2).toUpperCase();
+  return(
+    <div style={{position:"relative"}}>
+      <button onClick={()=>setOpen(o=>!o)} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px 6px 6px",borderRadius:10,border:"1px solid rgba(255,255,255,0.08)",background:"#1C1828",cursor:"pointer",color:"#fff"}}>
+        <div style={{width:26,height:26,borderRadius:8,background:"linear-gradient(135deg,#C57AFF,#902EDB)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:"#fff",flexShrink:0}}>{initials}</div>
+        <span style={{fontSize:12.5,fontWeight:600,maxWidth:90,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}</span>
+        <span style={{fontSize:9,opacity:.5}}>▾</span>
+      </button>
+      {open&&<div style={{position:"absolute",right:0,top:"calc(100% + 6px)",background:"#1C1828",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:8,minWidth:180,zIndex:500,boxShadow:"0 8px 32px #00000060"}}>
+        <div style={{padding:"6px 10px",fontSize:11,color:"#A199B2",fontWeight:600,letterSpacing:.5,textTransform:"uppercase"}}>Connecté en tant que</div>
+        <div style={{padding:"8px 10px",fontSize:13.5,fontWeight:700,borderBottom:"1px solid rgba(255,255,255,0.06)",marginBottom:4}}>{name}</div>
+        <button onClick={()=>{setOpen(false);onChangeName();}} style={{width:"100%",textAlign:"left",padding:"8px 10px",borderRadius:8,border:"none",background:"transparent",color:"#FF6370",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>
+          🔄 Changer d'étudiant
+        </button>
+      </div>}
+    </div>
+  );
+}
+
 // ═══ APP ═══
 export default function App(){
   const[pid,setPid]=useState("bioalc");
   const[sec,setSec]=useState("referentiel");
   const[search,setSearch]=useState("");
-  const[completed,setCompleted]=useState({});
-  const[qResults,setQResults]=useState({});
+
+  // ── Persistance étudiant ──
+  const[studentName,setStudentName]=useLS("btsr_student",null);
+  const[allProgress,setAllProgress]=useLS("btsr_progress",{});
+
+  const completed=allProgress[studentName]?.completed||{};
+  const qResults=allProgress[studentName]?.qr||{};
+
+  const setCompleted=(fn)=>setAllProgress(prev=>{
+    const cur=prev[studentName]?.completed||{};
+    return{...prev,[studentName]:{...prev[studentName],completed:typeof fn==="function"?fn(cur):fn}};
+  });
+  const setQResults=(fn)=>setAllProgress(prev=>{
+    const cur=prev[studentName]?.qr||{};
+    return{...prev,[studentName]:{...prev[studentName],qr:typeof fn==="function"?fn(cur):fn}};
+  });
   const[activeFiche,setAF]=useState(null);
   const[activeQuizTheme,setAQT]=useState(null);
   const[quizMode,setQM]=useState(null);
@@ -515,13 +582,16 @@ export default function App(){
     <div style={{minHeight:"100vh",background:`linear-gradient(170deg,#07060B,#0F0C18 50%,#0A0812)`,color:T.text,fontFamily:"'Sora','DM Sans',system-ui,sans-serif"}}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:#07060B}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:${T.text3}30;border-radius:3px}::selection{background:${T.accent}40}input::placeholder{color:${T.text3}}@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes fi{from{opacity:0}to{opacity:1}}.hl{transition:transform .2s,box-shadow .2s,border-color .2s}.hl:hover{transform:translateY(-2px);border-color:${T.accent}30!important}.qo{transition:all .15s;cursor:pointer}.qo:hover:not([disabled]){transform:translateX(4px);border-color:${T.accent}40!important}`}</style>
 
+      {!studentName&&<WelcomeModal onConfirm={n=>setStudentName(n)}/>}
+
       {/* HEADER */}
       <header style={{position:"sticky",top:0,zIndex:100,background:`#07060BE0`,backdropFilter:"blur(24px)",borderBottom:`1px solid ${T.border}`}}>
         <div style={{maxWidth:1300,margin:"0 auto",padding:"11px 20px"}}>
           <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:9}}>
             <div style={{width:38,height:38,borderRadius:12,background:`linear-gradient(135deg,${T.accent},${T.accent2})`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:14,color:"#fff",boxShadow:`0 0 24px ${T.accent}25`,flexShrink:0}}>PH</div>
             <div style={{flex:1}}><div style={{fontWeight:800,fontSize:15.5,letterSpacing:-.3}}>Picpus House</div><div style={{fontSize:9,color:T.text3,fontWeight:700,letterSpacing:2,textTransform:"uppercase"}}>Plateforme Révisions BTS · {totalQ} questions</div></div>
-            <div style={{position:"relative",width:240}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Rechercher…" style={{width:"100%",padding:"9px 14px 9px 32px",borderRadius:10,border:`1px solid ${T.border2}`,background:T.surface,color:T.text,fontSize:12,outline:"none"}}/><span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:12,opacity:.35}}>🔍</span></div>
+            <div style={{position:"relative",width:200}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Rechercher…" style={{width:"100%",padding:"9px 14px 9px 32px",borderRadius:10,border:`1px solid ${T.border2}`,background:T.surface,color:T.text,fontSize:12,outline:"none"}}/><span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:12,opacity:.35}}>🔍</span></div>
+            {studentName&&<StudentBadge name={studentName} onChangeName={()=>setStudentName(null)}/>}
           </div>
           <div style={{display:"flex",gap:3,overflowX:"auto"}}>{PROGRAMS.map(p=><button key={p.id} onClick={()=>switchProg(p.id)} style={{padding:"7px 14px",borderRadius:9,border:pid===p.id?`1.5px solid ${p.color}50`:"1.5px solid transparent",background:pid===p.id?`${p.color}12`:"transparent",color:pid===p.id?p.color:T.text3,fontSize:11.5,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}><span style={{marginRight:4}}>{p.icon}</span>{p.short}</button>)}</div>
         </div>
