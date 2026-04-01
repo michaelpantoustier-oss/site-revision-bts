@@ -6,12 +6,11 @@ export const supabase = createClient(
 );
 
 export async function syncStudent(name, filiere) {
-  try {
-    await supabase.from("students").upsert(
-      { name, filiere, last_seen_at: new Date().toISOString() },
-      { onConflict: "name" }
-    );
-  } catch(e) { console.warn("syncStudent:", e); }
+  const { error } = await supabase.from("students").upsert(
+    { name, filiere, last_seen_at: new Date().toISOString() },
+    { onConflict: "name" }
+  );
+  if(error) console.error("❌ syncStudent — Supabase error (tables créées ?):", error.message);
 }
 
 export async function logQuiz(studentName, filiere, themeId, themeTitle, modeId, score, total) {

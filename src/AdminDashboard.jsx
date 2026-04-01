@@ -230,14 +230,25 @@ export default function AdminDashboard({onClose}){
     else{setPwError(true);setPw("");}
   };
 
+  const [dbError,setDbError]=useState(null);
+
   const loadData=useCallback(async()=>{
     setLoading(true);
+    setDbError(null);
     const [s,q,f,g]=await Promise.all([
       supabase.from("students").select("*").order("last_seen_at",{ascending:false}),
       supabase.from("quiz_results").select("*").order("played_at",{ascending:false}),
       supabase.from("fiche_completions").select("*"),
       supabase.from("grades").select("*").order("graded_at",{ascending:false}),
     ]);
+    // Detect table-not-found errors
+    const errors=[s,q,f,g].filter(r=>r.error).map(r=>r.error.message);
+    if(errors.length>0){
+      const isTableMissing=errors.some(e=>e.includes("does not exist")||e.includes("relation")||e.includes("42P01"));
+      setDbError(isTableMissing
+        ? "⚠️ Tables Supabase introuvables — avez-vous exécuté le fichier supabase_setup.sql dans l'éditeur SQL de Supabase ?"
+        : "Erreur Supabase : "+errors[0]);
+    }
     setStudents(s.data||[]);
     setQuizResults(q.data||[]);
     setFichesDone(f.data||[]);
@@ -366,10 +377,19 @@ export default function AdminDashboard({onClose}){
           ))}
         </div>
 
+        {/* DB Error banner */}
+        {dbError&&<div style={{margin:"0 0 20px 0",padding:"16px 20px",borderRadius:12,background:`${T.red}18`,border:`1px solid ${T.red}40`,color:T.red,fontSize:13,lineHeight:1.6}}>
+          <strong>🔴 Erreur de connexion Supabase</strong><br/>
+          {dbError}<br/>
+          <span style={{color:T.text2,fontSize:12,marginTop:6,display:"block"}}>
+            → Allez dans votre projet Supabase › SQL Editor › New query, collez et exécutez le contenu du fichier <code style={{background:`${T.red}20`,padding:"2px 6px",borderRadius:4}}>supabase_setup.sql</code> présent à la racine du projet.
+          </span>
+        </div>}
+
         {/* Students table */}
         {loading?<div style={{textAlign:"center",padding:"60px 0",color:T.text2}}>Chargement…</div>:(
           rows.length===0
-            ?<div style={{textAlign:"center",padding:"60px 0",color:T.text3,fontSize:14}}>Aucun étudiant enregistré pour l'instant.</div>
+            ?<div style={{textAlign:"center",padding:"60px 0",color:T.text3,fontSize:14}}>{dbError?"Impossible de charger les données (voir l'erreur ci-dessus).":"Aucun étudiant enregistré pour l'instant."}</div>
             :<div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:16,overflow:"hidden"}}>
               <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
                 <thead>
