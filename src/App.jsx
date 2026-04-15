@@ -730,22 +730,68 @@ function FichesList({prog,search,done,onPick}){
   </div>;
 }
 
+function renderInline(text,c){
+  if(!text)return text;
+  const parts=text.split(/(\*\*.*?\*\*|\*[^*]+\*)/);
+  if(parts.length===1)return text;
+  return parts.map((p,i)=>{
+    if(p.startsWith("**")&&p.endsWith("**"))return <strong key={i} style={{color:c,fontWeight:700}}>{p.slice(2,-2)}</strong>;
+    if(p.startsWith("*")&&p.endsWith("*"))return <em key={i} style={{color:T.text2}}>{p.slice(1,-1)}</em>;
+    return p;
+  });
+}
 function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
-  const nc={Fondations:T.green,Intermédiaire:T.orange,Avancé:T.red};
+  const nc={Fondations:T.green,Intermédiaire:T.orange,Avancé:T.red,2:T.orange,3:T.red};
   const lines=f.contenu.split("\n");
+  // Group consecutive table lines
+  const groups=[];
+  let i=0;
+  while(i<lines.length){
+    if(lines[i].trim().startsWith("|")){
+      const tbl=[];
+      while(i<lines.length&&lines[i].trim().startsWith("|")){tbl.push(lines[i]);i++;}
+      groups.push({type:"table",lines:tbl});
+    } else {
+      groups.push({type:"line",content:lines[i]});i++;
+    }
+  }
+  const renderTable=(tblLines,gi)=>{
+    const rows=tblLines.filter(l=>!/^\s*\|[-:\s|]+\|\s*$/.test(l));
+    const parsed=rows.map(r=>r.split("|").slice(1,-1).map(c=>c.trim()));
+    if(!parsed.length)return null;
+    return <div key={gi} style={{overflowX:"auto",margin:"12px 0"}}>
+      <table style={{width:"100%",borderCollapse:"collapse",fontSize:12.5}}>
+        <tbody>{parsed.map((row,ri)=>(
+          <tr key={ri} style={{background:ri===0?`${c}18`:ri%2===0?"transparent":`rgba(255,255,255,0.025)`}}>
+            {row.map((cell,ci)=>ri===0
+              ? <th key={ci} style={{padding:"7px 12px",border:`1px solid ${T.border2}`,textAlign:"left",fontWeight:700,color:c,fontSize:11.5,whiteSpace:"nowrap"}}>{renderInline(cell,c)}</th>
+              : <td key={ci} style={{padding:"6px 12px",border:`1px solid ${T.border2}`,color:T.text,verticalAlign:"top"}}>{renderInline(cell,c)}</td>
+            )}
+          </tr>
+        ))}</tbody>
+      </table>
+    </div>;
+  };
+  const renderLine=(l,gi)=>{
+    if(!l.trim())return <div key={gi} style={{height:6}}/>;
+    if(l.startsWith("## "))return <div key={gi} style={{fontWeight:800,fontSize:15,color:c,marginTop:18,marginBottom:6,borderBottom:`1px solid ${c}30`,paddingBottom:5}}>{l.slice(3)}</div>;
+    if(l.startsWith("### "))return <div key={gi} style={{fontWeight:700,fontSize:13.5,color:T.text,marginTop:12,marginBottom:3}}>{renderInline(l.slice(4),c)}</div>;
+    if(l.startsWith("**")&&l.endsWith("**"))return <div key={gi} style={{fontWeight:700,fontSize:13.5,color:c,marginTop:12,marginBottom:3}}>{l.slice(2,-2)}</div>;
+    if(l.startsWith("• ")||l.startsWith("▸ "))return <div key={gi} style={{paddingLeft:16,position:"relative",marginBottom:1}}><span style={{position:"absolute",left:0,color:c}}>{l[0]}</span>{renderInline(l.slice(2),c)}</div>;
+    if(/^\d+\.\s/.test(l))return <div key={gi} style={{paddingLeft:16,marginBottom:1}}>{renderInline(l,c)}</div>;
+    if(l.startsWith("→ ")||l.startsWith("→  "))return <div key={gi} style={{paddingLeft:14,color:T.text2,marginBottom:1}}><span style={{color:c}}>→</span> {renderInline(l.replace(/^→\s+/,""),c)}</div>;
+    if(l.startsWith("✓ ")||l.startsWith("✗ "))return <div key={gi} style={{paddingLeft:16,position:"relative",marginBottom:1}}><span style={{position:"absolute",left:0,color:l[0]==="✓"?T.green:"#FF6370"}}>{l[0]}</span>{renderInline(l.slice(2),c)}</div>;
+    if(l.startsWith("---"))return <hr key={gi} style={{border:"none",borderTop:`1px solid ${T.border2}`,margin:"10px 0"}}/>;
+    if(l.startsWith("①")||l.startsWith("②")||l.startsWith("③"))return <div key={gi} style={{paddingLeft:22,position:"relative",marginBottom:2}}><span style={{position:"absolute",left:0,color:c,fontWeight:700}}>{l.match(/^[①-⑩]/)[0]}</span>{renderInline(l.slice(2),c)}</div>;
+    return <div key={gi}>{renderInline(l,c)}</div>;
+  };
   return <div style={{animation:"fu .3s"}}><Back onClick={onBack} label="Retour aux fiches"/>
     <div style={{background:T.card,border:`1px solid ${T.border2}`,borderRadius:T.r,padding:"26px",maxWidth:820}}>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,flexWrap:"wrap"}}><Badge c={nc[f.niveau]}>{f.niveau}</Badge><span style={{fontSize:11.5,color:T.text3}}>{f.duree} min · {f.bloc}</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,flexWrap:"wrap"}}><Badge c={nc[f.niveau]||T.orange}>{f.niveau}</Badge><span style={{fontSize:11.5,color:T.text3}}>{f.duree} min · {f.bloc}</span></div>
       <h2 style={{fontSize:21,fontWeight:800,marginBottom:7}}>{f.title}</h2>
-      <div style={{display:"flex",gap:4,marginBottom:18}}>{f.tags.map(t=><span key={t} style={{fontSize:10.5,color:c,padding:"2px 9px",borderRadius:5,background:`${c}10`,border:`1px solid ${c}20`}}>#{t}</span>)}</div>
-      <div style={{background:T.surface,borderRadius:11,padding:"20px",marginBottom:18,lineHeight:1.7,fontSize:13}}>
-        {lines.map((l,i)=>{
-          if(l.startsWith("**")&&l.endsWith("**"))return <div key={i} style={{fontWeight:700,fontSize:13.5,color:c,marginTop:i?12:0,marginBottom:3}}>{l.replace(/\*\*/g,"")}</div>;
-          if(l.startsWith("•"))return <div key={i} style={{paddingLeft:14,position:"relative"}}><span style={{position:"absolute",left:0,color:c}}>•</span>{l.slice(2)}</div>;
-          if(/^\d+\./.test(l))return <div key={i} style={{paddingLeft:14}}>{l}</div>;
-          if(!l.trim())return <div key={i} style={{height:6}}/>;
-          return <div key={i}>{l.replace(/\*\*/g,"")}</div>;
-        })}
+      <div style={{display:"flex",gap:4,marginBottom:18,flexWrap:"wrap"}}>{f.tags.map(t=><span key={t} style={{fontSize:10.5,color:c,padding:"2px 9px",borderRadius:5,background:`${c}10`,border:`1px solid ${c}20`}}>#{t}</span>)}</div>
+      <div style={{background:T.surface,borderRadius:11,padding:"20px",marginBottom:18,lineHeight:1.75,fontSize:13}}>
+        {groups.map((g,gi)=>g.type==="table"?renderTable(g.lines,gi):renderLine(g.content,gi))}
       </div>
       <div style={{display:"flex",gap:9,flexWrap:"wrap"}}>
         <button onClick={onDone} style={{padding:"11px 22px",borderRadius:11,border:"none",background:isDone?`${T.green}18`:`linear-gradient(135deg,${c},${T.accent2})`,color:isDone?T.green:"#fff",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{isDone?"✓ Acquise":"Marquer acquise"}</button>
