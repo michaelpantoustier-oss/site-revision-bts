@@ -1,5 +1,5 @@
 // ─── BTS Opticien-Lunetier ───
-const T={accent:"#FFB259",green:"#4AEAAC",blue:"#5EB5FF",red:"#FF6370",text2:"#A199B2",text3:"#6B6280"};
+const T={accent:"#FFB259",green:"#4AEAAC",blue:"#5EB5FF",red:"#FF6370",teal:"#47E5D9",pink:"#FF79C6",yellow:"#FFE566",orange:"#FFB259",text2:"#A199B2",text3:"#6B6280"};
 
 // ─── BANQUES DE QUESTIONS ───
 
