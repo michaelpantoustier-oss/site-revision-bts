@@ -1075,6 +1075,17 @@ function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
       <div style={{background:T.surface,borderRadius:11,padding:"20px",marginBottom:18,lineHeight:1.75,fontSize:13}}>
         {groups.map((g,gi)=>g.type==="table"?renderTable(g.lines,gi):renderLine(g.content,gi))}
       </div>
+      {f.videos&&f.videos.length>0&&<div style={{marginBottom:18}}>
+        <div style={{fontWeight:700,fontSize:13,color:c,marginBottom:10}}>🎬 Vidéos pédagogiques</div>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          {f.videos.map((v,vi)=><div key={vi} style={{borderRadius:11,overflow:"hidden",background:T.card,border:`1px solid ${T.border2}`}}>
+            <div style={{padding:"10px 14px",fontSize:12.5,fontWeight:600,color:T.text2,borderBottom:`1px solid ${T.border2}`}}>{v.title}</div>
+            <video controls style={{width:"100%",display:"block",maxHeight:400}} preload="metadata">
+              <source src={v.url} type="video/mp4"/>
+            </video>
+          </div>)}
+        </div>
+      </div>}
       <div style={{display:"flex",gap:9,flexWrap:"wrap"}}>
         <button onClick={onDone} style={{padding:"11px 22px",borderRadius:11,border:"none",background:isDone?`${T.green}18`:`linear-gradient(135deg,${c},${T.accent2})`,color:isDone?T.green:"#fff",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{isDone?"✓ Acquise":"Marquer acquise"}</button>
         {f.id&&<button onClick={()=>onQuiz(f.id)} style={{padding:"11px 22px",borderRadius:11,border:`1.5px solid ${c}35`,background:"transparent",color:c,fontSize:12.5,fontWeight:700,cursor:"pointer"}}>🎯 Quiz associé</button>}
