@@ -1086,6 +1086,19 @@ function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
           </div>)}
         </div>
       </div>}
+      {f.ressources&&f.ressources.length>0&&<div style={{marginBottom:18}}>
+        <div style={{fontWeight:700,fontSize:13,color:c,marginBottom:10}}>🔬 Ressources interactives</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {f.ressources.map((r,ri)=>{const icons={"atlas":"🧬","proteome":"🔬","cellxgene":"🖥️","dataset":"📊","tool":"🛠️"};return <a key={ri} href={r.url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"flex-start",gap:12,padding:"13px 16px",borderRadius:11,background:T.surface,border:`1.5px solid ${c}28`,textDecoration:"none"}}>
+            <span style={{fontSize:22,flexShrink:0,marginTop:1}}>{icons[r.type]||"🔗"}</span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontWeight:700,fontSize:13,color:c,marginBottom:3}}>{r.titre}</div>
+              <div style={{fontSize:11.5,color:T.text2,lineHeight:1.55}}>{r.description}</div>
+            </div>
+            <span style={{color:T.text3,fontSize:14,flexShrink:0,marginTop:3}}>↗</span>
+          </a>;})}
+        </div>
+      </div>}
       <div style={{display:"flex",gap:9,flexWrap:"wrap"}}>
         <button onClick={onDone} style={{padding:"11px 22px",borderRadius:11,border:"none",background:isDone?`${T.green}18`:`linear-gradient(135deg,${c},${T.accent2})`,color:isDone?T.green:"#fff",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{isDone?"✓ Acquise":"Marquer acquise"}</button>
         {f.id&&<button onClick={()=>onQuiz(f.id)} style={{padding:"11px 22px",borderRadius:11,border:`1.5px solid ${c}35`,background:"transparent",color:c,fontSize:12.5,fontWeight:700,cursor:"pointer"}}>🎯 Quiz associé</button>}
