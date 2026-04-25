@@ -278,11 +278,11 @@ export const PROGRAM_CGE = {
   quizThemes: QUIZ_THEMES_CGE,
 
   annales:[
-    {id:"cge_an1",annee:"Littérature",epreuve:"Corpus littéraire — sélection CGE 2027",themes:["Aragon","Gide","Orwell","Molière","Calderón","Borges","Carrère","Pirandello"],format:"Liste",
+    {id:"cge_an1",annee:"Littérature",epreuve:"Corpus littéraire — sélection CGE 2027",themes:["Aragon","Gide","Orwell","Molière","Calderón","Borges","Carrère","Pirandello"],format:"Liste",nolink:true,
       note:"Aragon (Le Mentir-vrai, 1980) · Gide (Les Faux-monnayeurs, 1925) · Orwell (1984, La Ferme des animaux) · Molière (Le Tartuffe) · Corneille (L'Illusion comique) · Calderón (La Vie est un songe) · Carrère (L'Adversaire) · Borges (Fictions) · Pirandello (Six personnages).",url:null},
-    {id:"cge_an2",annee:"Cinéma",epreuve:"Corpus filmique — sélection CGE 2027",themes:["Welles","Weir","Kurosawa","Nolan","Levinson","Chaplin","Karel","Lubitsch"],format:"Liste",
+    {id:"cge_an2",annee:"Cinéma",epreuve:"Corpus filmique — sélection CGE 2027",themes:["Welles","Weir","Kurosawa","Nolan","Levinson","Chaplin","Karel","Lubitsch"],format:"Liste",nolink:true,
       note:"Peter Weir (The Truman Show, 1998) · Orson Welles (F for Fakes, 1973) · Kurosawa (Rashōmon, 1950) · Nolan (Inception, The Prestige) · Levinson (Wag the Dog, 1997) · Chaplin (Le Dictateur, 1940) · Karel (Opération Lune, 2002) · Lubitsch (To Be or Not to Be, 1942).",url:null},
-    {id:"cge_an3",annee:"Essais",epreuve:"Corpus essayistique — sélection CGE 2027",themes:["Eco","Benjamin","Colon","Morin","Herzog"],format:"Liste",
+    {id:"cge_an3",annee:"Essais",epreuve:"Corpus essayistique — sélection CGE 2027",themes:["Eco","Benjamin","Colon","Morin","Herzog"],format:"Liste",nolink:true,
       note:"Umberto Eco (La Guerre du faux) · Walter Benjamin (L'Œuvre d'art à l'époque de sa reproductibilité technique) · David Colon (Propagande, 2019) · Edgar Morin (La Rumeur d'Orléans) · Werner Herzog (L'Avenir de la vérité).",url:null},
     {id:"cge_an4",annee:"Expositions",epreuve:"Fake News — art, fiction, mensonge (Fondation EDF)",themes:["Fake News","Art","Fiction","Musée"],format:"PDF",
       note:"Dossier pédagogique de la Fondation groupe EDF (exposition 2021). Approche artistique des fake news.",url:"https://fondation.edf.com/app/uploads/2021/05/edf-fake-new-fr-03.pdf"},
@@ -292,7 +292,7 @@ export const PROGRAM_CGE = {
       note:"Dossier de presse de l'exposition Escher à la Monnaie de Paris (nov. 2025 – mars 2026). Illusions géométriques et trompe-l'œil.",url:"https://www.monnaiedeparis.fr/media/contentmanager/content/000_Dossier_de_presse_Escher.pdf"},
     {id:"cge_an7",annee:"Audio",epreuve:"La Guerre des mondes — Orson Welles (1938) · INA",themes:["Canular","Radio","Panique","Welles"],format:"Document sonore",
       note:"Le 30 octobre 1938, CBS diffuse une adaptation radio de H.G. Wells sous forme de faux bulletin d'info. Une partie du public croit à une vraie invasion martienne — exemple fondateur de canular médiatique.",url:"https://www.ina.fr/ina-eclaire-actu/fiction-radio-canular-atome-panique-apocalypse-nucleaire-france"},
-    {id:"cge_an8",annee:"Podcast",epreuve:"France Culture — Faits alternatifs : pourquoi notre cerveau est pris en défaut ?",themes:["Post-vérité","Cognition","Biais"],format:"Podcast",
+    {id:"cge_an8",annee:"Podcast",epreuve:"France Culture — Faits alternatifs : pourquoi notre cerveau est pris en défaut ?",themes:["Post-vérité","Cognition","Biais"],format:"Podcast",nolink:true,
       note:"Brice Couturier, France Culture, 23 avril 2021. Les biais cognitifs qui nous rendent vulnérables à la désinformation.",url:null},
   ],
 };
