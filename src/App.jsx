@@ -771,6 +771,7 @@ const QUIZ_MODES = [
 
 // Shuffle util
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function shuffleChoices(q){if(!q.choices||q.choices.length<2)return q;const idx=q.choices.map((_,i)=>i);for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}return{...q,choices:idx.map(i=>q.choices[i]),answer:idx.indexOf(q.answer)};}
 
 // ─── PROGRAMS ───
 const PROGRAMS=[
@@ -921,7 +922,7 @@ export default function App(){
 
   const startQuiz=(theme,mode)=>{
     const n=Math.min(mode.questions,theme.bank.length);
-    const questions=shuffle(theme.bank).slice(0,n);
+    const questions=shuffle(theme.bank).slice(0,n).map(shuffleChoices);
     setAQT(theme);setQM(mode);setQS({i:0,ans:{},sc:0,fin:false,questions});
   };
 
@@ -1178,7 +1179,7 @@ function QuizPlay({quiz,mode,s,setS,c,onDone,onBack,onBackToThemes}){
   const q=questions[i];const picked=ans[q?.id];const show=picked!==undefined;
   const pick=(n)=>{if(show)return;const ok=n===q.answer;setS(p=>({...p,ans:{...p.ans,[q.id]:n},sc:ok?p.sc+1:p.sc}))};
   const next=()=>{if(i+1>=questions.length){onDone(s.sc,questions.length);setS(p=>({...p,fin:true}))}else setS(p=>({...p,i:p.i+1}))};
-  const restart=()=>{const n=Math.min(mode.questions,quiz.bank.length);const qs=shuffle(quiz.bank).slice(0,n);setS({i:0,ans:{},sc:0,fin:false,questions:qs})};
+  const restart=()=>{const n=Math.min(mode.questions,quiz.bank.length);const qs=shuffle(quiz.bank).slice(0,n).map(shuffleChoices);setS({i:0,ans:{},sc:0,fin:false,questions:qs})};
 
   if(fin){const pct=Math.round((sc/questions.length)*100);const em=pct>=90?"🏆":pct>=70?"🌟":pct>=50?"👍":"💪";
     return <div style={{animation:"fu .35s",maxWidth:700,margin:"0 auto"}}>
@@ -1213,6 +1214,7 @@ function QuizPlay({quiz,mode,s,setS,c,onDone,onBack,onBackToThemes}){
     <div style={{height:4,borderRadius:2,background:`${T.text3}10`,marginBottom:18}}><div style={{height:"100%",borderRadius:2,background:c,width:`${((i+1)/questions.length)*100}%`,transition:"width .35s"}}/></div>
     <div style={{background:T.card,borderRadius:T.r,padding:"24px",border:`1px solid ${T.border2}`}}>
       {q.diff&&<div style={{marginBottom:8}}>{[1,2,3].map(d=><span key={d} style={{fontSize:10,marginRight:2,opacity:d<=q.diff?1:.2}}>⭐</span>)}</div>}
+      {q.image&&<div style={{marginBottom:14,borderRadius:10,overflow:"hidden",border:`1px solid ${T.border2}`}}><img src={q.image} alt="Observation microscopique" onError={e=>{e.target.parentElement.style.display="none"}} style={{width:"100%",maxHeight:300,objectFit:"contain",background:`${T.text3}06`,display:"block"}}/>{q.imageCaption&&<div style={{fontSize:10.5,color:T.text3,padding:"5px 10px",background:T.surface,textAlign:"center",fontStyle:"italic",borderTop:`1px solid ${T.border2}`}}>{q.imageCaption}</div>}</div>}
       <div style={{fontSize:15,fontWeight:700,lineHeight:1.4,marginBottom:18}}>{q.prompt}</div>
       <div style={{display:"flex",flexDirection:"column",gap:7}}>
         {q.choices.map((ch,n)=>{const sel=picked===n;const ok=n===q.answer;return <button key={n} className="qo" disabled={show} onClick={()=>pick(n)} style={{padding:"13px 16px",borderRadius:11,border:`1.5px solid ${show&&ok?`${T.green}45`:show&&sel&&!ok?`${T.red}45`:sel?`${c}45`:T.border2}`,background:show&&ok?`${T.green}0A`:show&&sel&&!ok?`${T.red}0A`:sel?`${c}06`:T.surface,color:T.text,fontSize:13,fontWeight:600,textAlign:"left",display:"flex",alignItems:"center",gap:11}}>

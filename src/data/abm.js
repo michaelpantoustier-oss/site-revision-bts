@@ -245,6 +245,99 @@ export const QB_ABM_IMMUNOPHENO_CELL = [
   {id:"abm_ip10",prompt:"Le seuil de blastes ≥ 20% dans la moelle osseuse définit :",choices:["Un syndrome myélodysplasique","Une leucémie aiguë (LAM ou LAL selon le phénotype)","Une polyglobulie de Vaquez","Un myélome multiple"],answer:1,diff:2,explication:"OMS : leucémie aiguë = ≥20% de blastes dans la moelle (certaines translocations comme t(8;21) ou inv(16) suffisent quel que soit le % de blastes). Le phénotype (MPO+ = LAM ; TdT+, CD3+ ou CD19+ = LAL) est déterminé par immunophénotypage.",tags:["Blastes","Leucémie aiguë","OMS","Immunophénotypage"]},
 ];
 
+// ─── QB ABM : identification morphologique lame MGG / images ───
+export const QB_ABM_HEMATO_VISUAL = [
+  {id:"abm_vis1",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Neutrophil_with_anthrax_copy.jpg",
+   imageCaption:"Frottis sanguin coloré MGG — leucocyte en centre de champ (×1000, immersion)",
+   prompt:"D'après sa morphologie, identifiez ce leucocyte.",
+   choices:["Polynucléaire neutrophile (PNN) segmenté","Polynucléaire éosinophile","Monocyte","Lymphocyte B"],
+   answer:0,diff:1,
+   explication:"Le PNN segmenté présente un noyau multilobé (2-5 lobes reliés par des ponts de chromatine) et un cytoplasme rose pâle avec de fines granulations neutrophiles. 50-70 % des leucocytes circulants.",
+   tags:["Morphologie","Neutrophile","Frottis","MGG"]},
+
+  {id:"abm_vis2",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Eosinophil_in_blood_crop.jpg",
+   imageCaption:"Frottis sanguin MGG — leucocyte avec granulations distinctives",
+   prompt:"Ce leucocyte présente un noyau bilobé et de gros granules cytoplasmiques orangés-roses intenses. De quel type s'agit-il ?",
+   choices:["Polynucléaire basophile","Polynucléaire éosinophile","Polynucléaire neutrophile en bande","Mastocyte circulant"],
+   answer:1,diff:1,
+   explication:"L'éosinophile (12-17 µm) se distingue par ses grands granules éosinophiles (orangés/roses) et son noyau bilobé. Taux normal : 1-4 %. Élevé dans les parasitoses, allergies, lymphomes.",
+   tags:["Morphologie","Éosinophile","Frottis","MGG"]},
+
+  {id:"abm_vis3",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Lymphocyte2.jpg",
+   imageCaption:"Frottis de sang normal — coloration Wright-Giemsa",
+   prompt:"Cette cellule présente un gros noyau rond très dense occupant presque tout le cytoplasme, avec un fin liseré cytoplasmique bleuté. Quelle est-elle ?",
+   choices:["Monocyte","Lymphocyte","Polynucléaire basophile","Érythroblaste orthochromatophile"],
+   answer:1,diff:1,
+   explication:"Le petit lymphocyte (7-10 µm) a un noyau rond et densément coloré avec très peu de cytoplasme. 20-30 % des leucocytes. Les grands lymphocytes granuleux (LGL) sont plus larges et montrent des granules azurophiles.",
+   tags:["Morphologie","Lymphocyte","Frottis","MGG"]},
+
+  {id:"abm_vis4",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Monocyte.jpg",
+   imageCaption:"Frottis sanguin MGG ×1000 — le plus grand leucocyte du sang circulant",
+   prompt:"Cette cellule est la plus volumineuse des leucocytes (12-20 µm). Son noyau est irrégulier, en « rein » ou « fer à cheval », avec de la chromatine lâche. Quelle est-elle ?",
+   choices:["Grand lymphocyte à grains","Plasmocyte circulant","Monocyte","Polynucléaire neutrophile en bande (stab)"],
+   answer:2,diff:1,
+   explication:"Le monocyte présente un noyau en rein/fer à cheval avec chromatine lâche, et un cytoplasme gris-bleuté finement vacuolisé. Il représente 3-8 % des leucocytes et se différencie en macrophage dans les tissus.",
+   tags:["Morphologie","Monocyte","Frottis","MGG"]},
+
+  {id:"abm_vis5",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Sickle_cell_01.jpg",
+   imageCaption:"Frottis sanguin — patient atteint d'hémoglobinopathie",
+   prompt:"Ce frottis montre des hématies allongées en forme de faucille, une polychromatophilie et des cellules cibles. Quel diagnostic morphologique posez-vous ?",
+   choices:["Thalassémie majeure (β-thal homozygote)","Drépanocytose homozygote (HbSS) — hématies falciformes","Sphérocytose héréditaire de Minkowski-Chauffard","Anémie hémolytique auto-immune (AHAI)"],
+   answer:1,diff:1,
+   explication:"Les drépanocytes (hématies en faucille) résultent de la polymérisation de l'HbS désoxy. Electrophorèse Hb : HbS > 50 %. Les crises vaso-occlusives sont liées à la falciformation sous hypoxie.",
+   tags:["Morphologie","Drépanocytose","HbS","Hématies anormales"]},
+
+  {id:"abm_vis6",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Myeloblast_smear_2010-06-09.jpg",
+   imageCaption:"Aspirat médullaire — coloration MGG — suspicion d'hémopathie maligne",
+   prompt:"Ces grandes cellules présentent un noyau volumineux avec 1-3 nucléoles proéminents, un rapport nucléocytoplasmique élevé et un cytoplasme basophile peu granuleux. Il s'agit de :",
+   choices:["Myélocytes neutrophiles normaux","Myéloblastes — leucémie aiguë myéloïde (LAM)","Lymphoblastes — leucémie aiguë lymphoblastique T","Proérythroblastes médullaires normaux"],
+   answer:1,diff:2,
+   explication:"Les myéloblastes (critères OMS : ≥20 % dans le sang/moelle) ont un noyau ouvert avec nucléoles visibles et un rapport N/C élevé. La présence de corps d'Auer (bâtonnets azurophiles fusionnés) est pathognomonique des LAM.",
+   tags:["Morphologie","Blastes","LAM","Hémopathie maligne"]},
+
+  {id:"abm_vis7",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hypersegmented_neutrophil.jpg",
+   imageCaption:"Frottis sanguin — anomalie morphologique des polynucléaires",
+   prompt:"Ce polynucléaire présente un noyau avec ≥6 lobes (hypersegmentation). Cette anomalie morphologique évoque en priorité :",
+   choices:["Infection bactérienne sévère avec shift à gauche","Carence en vitamine B12 ou en folates (anémie mégaloblastique)","Leucémie myéloïde chronique LMC","Traitement par G-CSF (filgrastim)"],
+   answer:1,diff:2,
+   explication:"La polynucléose hypersegmentée (≥5 % de PNN avec ≥5 lobes, ou présence d'un PNN à ≥6 lobes) est un signe précoce d'anémie mégaloblastique par carence B12 ou folates. Elle précède la macrocytose et l'anémie.",
+   tags:["Morphologie","Hypersegmentation","Carence B12","Folates","Mégaloblastique"]},
+
+  {id:"abm_vis8",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Iron_deficiency_anemia_blood_film.jpg",
+   imageCaption:"Frottis sanguin — anémie microcytaire hypochrome",
+   prompt:"Ce frottis montre des hématies pâles avec zone centrale claire élargie (annulocytes), une micropopulation de très petites cellules et une poïkilocytose modérée. Ce profil correspond à :",
+   choices:["Anémie hémolytique par sphérocytose héréditaire","Anémie ferriprive (carence en fer)","Polyglobulie de Vaquez (maladie de Vaquez)","Anémie aplasique profonde"],
+   answer:1,diff:1,
+   explication:"La carence martiale donne une anémie microcytaire (VGM < 80 fL) hypochrome (CCMH < 31 g/dL). Au frottis : annulocytes (hématies pâles), micropopulation, poïkilocytose. Ferritine effondrée, CST < 20 %.",
+   tags:["Morphologie","Anémie ferriprive","Fer","Hypochromie","Microcytose"]},
+
+  {id:"abm_vis9",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Reticulocyte.jpg",
+   imageCaption:"Coloration supravitale au bleu de crésyl brillant — identification des réticulocytes",
+   prompt:"La coloration supravitale au bleu de crésyl brillant révèle dans ces cellules un réseau (réticulum) bleuté précipité. Ces cellules sont des :",
+   choices:["Érythrocytes matures normaux","Réticulocytes (érythrocytes jeunes avec ARNr résiduel)","Normoblastes orthochromatophiles médullaires","Corps de Heinz (précipités d'Hb dénaturée)"],
+   answer:1,diff:1,
+   explication:"Les réticulocytes contiennent des ARN ribosomaux formant un réticulum visible en coloration supravitale. Taux normal : 25-75 G/L (0,5-2 %). Augmenté dans les anémies régénératives (hémolyse, hémorragie).",
+   tags:["Réticulocytes","Érythropoïèse","Coloration supravitale","Régénération"]},
+
+  {id:"abm_vis10",
+   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Plasma_cell_myeloma_-_cytology_-_high_mag.jpg",
+   imageCaption:"Aspirat médullaire MGG — prolifération de cellules anormales",
+   prompt:"Ces cellules ovales présentent un cytoplasme très basophile, un noyau excentré avec chromatine en « roue de charrette » et un halo périnucléaire clair (zone de Golgi). Il s'agit de :",
+   choices:["Lymphocytes B activés (centroblastes)","Plasmocytes (différenciation terminale des lymphocytes B)","Myéloblastes de LAM","Monocytes médullaires activés"],
+   answer:1,diff:2,
+   explication:"Les plasmocytes (différenciation terminale LB) se reconnaissent à leur chromatine en roue de charrette, noyau excentré, cytoplasme très basophile et zone de Golgi claire. Accumulation pathologique dans le myélome multiple (IgG ou IgA monoclonale).",
+   tags:["Morphologie","Plasmocyte","Myélome","Moelle osseuse"]},
+];
+
 export const FICHES_ABM = [
   {id:"abm_f1",title:"Phase pré-analytique : tubes et prélèvements",bloc:"Bloc 2",tags:["Pré-analytique","Tubes","Qualité"],duree:15,niveau:"Fondations",qbank:"abm_preana",
     contenu:"**La phase pré-analytique = 40-70% des erreurs en biologie médicale**\n\n**Tubes de prélèvement (principaux) :**\n• Violet (EDTA) : NFS, réticulocytes, groupage, HbA1c\n• Bleu (citrate 3.2%) : hémostase (TP, TCA, fibrinogène) → REMPLISSAGE AU TRAIT obligatoire\n• Rouge/Gel : biochimie (glycémie, ionogramme, enzymes, sérologies) → attendre coagulation\n• Vert (héparine) : gaz du sang, certaines analyses urgentes\n• Gris (fluorure) : glycémie (inhibe glycolyse)\n\n**Ordre de remplissage :** Hémocultures → citrate → sec/gel → héparine → EDTA → fluorure\n\n**Interférences pré-analytiques :**\n• Hémolyse : ↑ faux K⁺, LDH, ASAT\n• Lipémie : fausse les dosages spectrophotométriques\n• Ictère : interfère aux λ ≈ 460 nm\n• Garrot > 1 min : hémoconcentration, pseudohyperkaliémie\n\n**Conservation ECBU :** < 2h à TA ou < 24h à +4°C"},
@@ -297,6 +390,16 @@ export const FICHES_ABM = [
       {titre:"CELLxGENE — Profils cellulaires",url:"https://cellxgene.cziscience.com/gene-expression",type:"cellxgene",description:"Cherchez MPO, CD14, CD19, CD3E dans le tissu sanguin. Observez comment ces marqueurs distinguent les types cellulaires en scRNA-seq."},
       {titre:"BloodSpot — Marqueurs thérapeutiques",url:"https://bloodspot.eu/",type:"atlas",description:"Recherchez BTK (ibrutinib), FLT3 (midostaurine), BCL2 (venetoclax). Pour chaque gène, identifiez dans quelle population normale il est exprimé — cela explique pourquoi ces molécules sont des cibles thérapeutiques."}
     ]}
+  ,{id:"abm_f16",title:"Identification morphologique des cellules sanguines — lame MGG",
+    bloc:"Bloc 2",tags:["Frottis","MGG","Morphologie","Leucocytes","Érythrocytes","Blastes","Identification"],
+    duree:50,niveau:"Intermédiaire",qbank:"abm_hemato_visual",
+    contenu:"## 🔬 Critères d'identification MGG — leucocytes\n\n| Cellule | Taille (µm) | Noyau | Cytoplasme | Granulations |\n|---------|------------|-------|------------|--------------|\n| **PNN segmenté** | 10-15 | Multilobé (2-5 lobes) | Rose pâle | Fines neutrophiles |\n| **PNE** | 12-17 | Bilobé | Rose | Grands, orangés |\n| **PNB** | 10-14 | Bilobé irrégulier | Peu visible | Très grands, violet-noir |\n| **Lymphocyte** | 7-12 | Rond, dense | Fin liseré bleu | Rares azurophiles |\n| **Monocyte** | 12-20 | Rein/fer à cheval | Gris-bleuté | Fins, vacuoles |\n\n## 🩸 Hématies anormales — morphologie et orientation diagnostique\n\n• **Annulocyte** (zone centrale élargie) → carence martiale (hypochromie)\n• **Sphérocyte** (rond, sans pallor) → sphérocytose héréditaire, AHAI\n• **Drépanocyte** (en faucille) → drépanocytose HbSS\n• **Cellule cible** (en tir à la corde) → thalassémie, hépatopathie\n• **Schizocyte** (fragment anguleux) → microangiopathie thrombotique (PTT, SHU)\n• **Dacryocyte** (en larme) → myélofibrose, envahissement médullaire\n• **Acanthocyte** (épines irrégulières) → abêtalipoprotéinémie, cirrhose sévère\n\n## 🧬 Reconnaître un blast — critères OMS\n\n**Blast myéloïde (LAM)** : noyau volumineux + 1-3 nucléoles visibles + chromatine lâche + cytoplasme basophile ± corps d'Auer (pathognomonique LAM).\n**Blast lymphoïde (LAL)** : noyau arrondi, chromatine condensée, cytoplasme très réduit, TdT+.\n→ Seuil diagnostique : ≥ 20 % blastes dans le sang ou la moelle osseuse (critères OMS 2022).\n\n## 📏 Série érythroïde — séquence de maturation (moelle → sang)\n\n① **Proérythroblaste** : 18-25 µm, très basophile, nucléoles visibles\n② **Érythroblaste basophile** : 12-18 µm, noyau dense, cytoplasme bleu intense\n③ **Érythroblaste polychromatophile** : cytoplasme bleu-rose (début synthèse HbA)\n④ **Érythroblaste orthochromatophile** : cytoplasme rose, noyau pycnotique\n⑤ **Réticulocyte** : noyau expulsé, réticulum ARN visible au bleu de crésyl brillant\n⑥ **Érythrocyte mature** : biconcave, 7-8 µm, anucléé, durée de vie 120 jours\n\n## 💡 Technique MGG — points-clés pour l'examen\n\n→ **May-Grünwald** : colore les éléments éosinophiles (noyaux, granules)\n→ **Giemsa** : colore les éléments basophiles + spécifique des granulations (éosino/baso/neutro)\n→ Grossissement **×1000** à l'immersion obligatoire pour la formule leucocytaire\n→ Zone de lecture = zone où 50 % des hématies ne se touchent pas (ni amassées ni isolées)\n→ Comptage de **100 leucocytes** pour la formule différentielle",
+    ressources:[
+      {titre:"ASH Image Bank — Atlas morphologie hématologique",url:"https://imagebank.hematology.org/",type:"atlas",description:"ACTIVITÉ : parcourez les catégories Leukocyte Disorders et Red Cell Disorders. Identifiez chaque image avant de lire la légende — simulez la lecture de frottis."},
+      {titre:"Human Protein Atlas — Blood Cell Types",url:"https://www.proteinatlas.org/humanproteome/blood+cell",type:"proteome",description:"Corrélation entre morphologie MGG et profil protéique de chaque type leucocytaire. Utile pour comprendre les marqueurs d'identification en cytométrie."},
+      {titre:"BloodSpot — Hématopoïèse et expression génique",url:"https://bloodspot.eu/",type:"atlas",description:"Observez l'expression de MPO (PNN), CD19 (lymphocyte B), CD3E (lymphocyte T), CD14 (monocyte). Corréllez avec la morphologie MGG."},
+      {titre:"CELLxGENE — Tissu sanguin humain",url:"https://cellxgene.cziscience.com/gene-expression",type:"cellxgene",description:"Sélectionnez Blood comme tissu. Visualisez comment chaque type cellulaire est distingué par son profil transcriptomique — complément des critères morphologiques."}
+    ]}
   ,...FICHES_PC
 ];
 
@@ -317,6 +420,7 @@ export const QUIZ_THEMES_ABM = [
   ,{id:"qt-abm-biol-mol2",title:"Biologie moléculaire clinique avancée",tags:["PCR multiplex","Charge virale","HER2","BRCA","MSI","DPYD","ctDNA","Métagénomique"],bank:QB_ABM_BIOL_MOL2,ficheId:"abm_f13",color:T.blue}
     ,{id:"qt-abm-hemato-cell",title:"Hématopoïèse & Cell Atlas",tags:["CD34","BloodSpot","scRNA-seq","Différenciation","HBB","MPO"],bank:QB_ABM_HEMATO_CELL,ficheId:"abm_f14",color:T.blue}
   ,{id:"qt-abm-immunopheno",title:"Immunophénotypage & transcriptomique",tags:["CD markers","Cytométrie","LAM","LLC","NK","scRNA-seq"],bank:QB_ABM_IMMUNOPHENO_CELL,ficheId:"abm_f15",color:T.pink}
+  ,{id:"qt-abm-hemato-visual",title:"Identification morphologique — lame MGG",tags:["Frottis","MGG","Morphologie","Leucocytes","Blastes","Hématies anormales"],bank:QB_ABM_HEMATO_VISUAL,ficheId:"abm_f16",color:T.yellow}
   ,...QUIZ_THEMES_PC
 ];
 
