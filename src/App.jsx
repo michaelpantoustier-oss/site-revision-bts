@@ -939,11 +939,11 @@ export default function App(){
 
       {/* SUB-NAV */}
       {pid!=="english"&&<div style={{maxWidth:1300,margin:"0 auto",padding:"14px 20px 0",display:"flex",gap:5,overflowX:"auto"}}>
-        {SECTIONS.map(s=><button key={s.id} onClick={()=>switchSec(s.id)} style={{padding:"9px 16px",borderRadius:11,border:sec===s.id?`1.5px solid ${prog.color}35`:`1px solid ${T.border}`,background:sec===s.id?`${prog.color}0C`:T.surface,color:sec===s.id?T.text:T.text2,fontSize:12.5,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap",flexShrink:0}}>
-          <span style={{fontSize:14}}>{s.icon}</span>{s.label}
+        {SECTIONS.map(s=>{const lbl=pid==="cge"&&s.id==="referentiel"?"Bibliographie":pid==="cge"&&s.id==="annales"?"Ressources":s.label;const icn=pid==="cge"&&s.id==="referentiel"?"📚":pid==="cge"&&s.id==="annales"?"🔗":s.icon;return <button key={s.id} onClick={()=>switchSec(s.id)} style={{padding:"9px 16px",borderRadius:11,border:sec===s.id?`1.5px solid ${prog.color}35`:`1px solid ${T.border}`,background:sec===s.id?`${prog.color}0C`:T.surface,color:sec===s.id?T.text:T.text2,fontSize:12.5,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap",flexShrink:0}}>
+          <span style={{fontSize:14}}>{icn}</span>{lbl}
           {s.id==="fiches"&&prog.fiches.length>0&&<Pill c={prog.color}>{prog.fiches.length}</Pill>}
           {s.id==="quiz"&&prog.quizThemes.length>0&&<Pill c={prog.color}>{totalQ}Q</Pill>}
-        </button>)}
+        </button>;})}
       </div>}
 
       {/* CONTENT */}
