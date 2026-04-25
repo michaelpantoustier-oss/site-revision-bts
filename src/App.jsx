@@ -7,6 +7,7 @@ import { PROGRAM_BM } from "./data/bm.js";
 import { PROGRAM_PRODENT } from "./data/prodent.js";
 import { FICHES_PC, QUIZ_THEMES_PC } from "./data/phys_chim.js";
 import { ENGLISH_VOCAB, ENGLISH_LISTENING } from "./data/english.js";
+import { PROGRAM_CGE } from "./data/cge.js";
 import { syncStudent, logQuiz, logFiche } from "./lib/supabase.js";
 import AdminDashboard from "./AdminDashboard.jsx";
 
@@ -815,6 +816,7 @@ const PROGRAMS=[
   PROGRAM_FED,
   PROGRAM_PRODENT,
   {id:"english",short:"EN",name:"Anglais professionnel",color:"#3B82F6",icon:"🇬🇧",blocs:[],fiches:[],quizThemes:[],annales:[]},
+  PROGRAM_CGE,
 ];
 
 const SECTIONS=[{id:"referentiel",label:"Référentiel",icon:"📋"},{id:"fiches",label:"Fiches",icon:"📝"},{id:"quiz",label:"Quiz",icon:"🎯"},{id:"annales",label:"Annales",icon:"📚"},{id:"progression",label:"Progression",icon:"📊"}];
