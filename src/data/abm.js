@@ -248,7 +248,7 @@ export const QB_ABM_IMMUNOPHENO_CELL = [
 // ─── QB ABM : identification morphologique lame MGG / images ───
 export const QB_ABM_HEMATO_VISUAL = [
   {id:"abm_vis1",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Neutrophil_with_anthrax_copy.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Neutrophil_with_anthrax_copy.jpg",
    imageCaption:"Frottis sanguin coloré MGG — leucocyte en centre de champ (×1000, immersion)",
    prompt:"D'après sa morphologie, identifiez ce leucocyte.",
    choices:["Polynucléaire neutrophile (PNN) segmenté","Polynucléaire éosinophile","Monocyte","Lymphocyte B"],
@@ -257,7 +257,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Neutrophile","Frottis","MGG"]},
 
   {id:"abm_vis2",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Eosinophil_in_blood_crop.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/1/1b/Eosinophil.jpg",
    imageCaption:"Frottis sanguin MGG — leucocyte avec granulations distinctives",
    prompt:"Ce leucocyte présente un noyau bilobé et de gros granules cytoplasmiques orangés-roses intenses. De quel type s'agit-il ?",
    choices:["Polynucléaire basophile","Polynucléaire éosinophile","Polynucléaire neutrophile en bande","Mastocyte circulant"],
@@ -266,7 +266,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Éosinophile","Frottis","MGG"]},
 
   {id:"abm_vis3",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Lymphocyte2.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/1/17/Lymphocyte2.jpg",
    imageCaption:"Frottis de sang normal — coloration Wright-Giemsa",
    prompt:"Cette cellule présente un gros noyau rond très dense occupant presque tout le cytoplasme, avec un fin liseré cytoplasmique bleuté. Quelle est-elle ?",
    choices:["Monocyte","Lymphocyte","Polynucléaire basophile","Érythroblaste orthochromatophile"],
@@ -275,7 +275,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Lymphocyte","Frottis","MGG"]},
 
   {id:"abm_vis4",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Monocyte.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/e/e3/Monocyte.jpg",
    imageCaption:"Frottis sanguin MGG ×1000 — le plus grand leucocyte du sang circulant",
    prompt:"Cette cellule est la plus volumineuse des leucocytes (12-20 µm). Son noyau est irrégulier, en « rein » ou « fer à cheval », avec de la chromatine lâche. Quelle est-elle ?",
    choices:["Grand lymphocyte à grains","Plasmocyte circulant","Monocyte","Polynucléaire neutrophile en bande (stab)"],
@@ -284,7 +284,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Monocyte","Frottis","MGG"]},
 
   {id:"abm_vis5",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Sickle_cell_01.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/a/ac/Sickle_cell_01.jpg",
    imageCaption:"Frottis sanguin — patient atteint d'hémoglobinopathie",
    prompt:"Ce frottis montre des hématies allongées en forme de faucille, une polychromatophilie et des cellules cibles. Quel diagnostic morphologique posez-vous ?",
    choices:["Thalassémie majeure (β-thal homozygote)","Drépanocytose homozygote (HbSS) — hématies falciformes","Sphérocytose héréditaire de Minkowski-Chauffard","Anémie hémolytique auto-immune (AHAI)"],
@@ -293,7 +293,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Drépanocytose","HbS","Hématies anormales"]},
 
   {id:"abm_vis6",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Myeloblast_smear_2010-06-09.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Myeloblast_with_Auer_rod_smear_2010-01-27.JPG",
    imageCaption:"Aspirat médullaire — coloration MGG — suspicion d'hémopathie maligne",
    prompt:"Ces grandes cellules présentent un noyau volumineux avec 1-3 nucléoles proéminents, un rapport nucléocytoplasmique élevé et un cytoplasme basophile peu granuleux. Il s'agit de :",
    choices:["Myélocytes neutrophiles normaux","Myéloblastes — leucémie aiguë myéloïde (LAM)","Lymphoblastes — leucémie aiguë lymphoblastique T","Proérythroblastes médullaires normaux"],
@@ -302,7 +302,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Blastes","LAM","Hémopathie maligne"]},
 
   {id:"abm_vis7",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hypersegmented_neutrophil.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/e/ea/Hypersegmented_neutrophil.jpg",
    imageCaption:"Frottis sanguin — anomalie morphologique des polynucléaires",
    prompt:"Ce polynucléaire présente un noyau avec ≥6 lobes (hypersegmentation). Cette anomalie morphologique évoque en priorité :",
    choices:["Infection bactérienne sévère avec shift à gauche","Carence en vitamine B12 ou en folates (anémie mégaloblastique)","Leucémie myéloïde chronique LMC","Traitement par G-CSF (filgrastim)"],
@@ -311,7 +311,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Hypersegmentation","Carence B12","Folates","Mégaloblastique"]},
 
   {id:"abm_vis8",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Iron_deficiency_anemia_blood_film.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Iron_deficiency_anemia_blood_film.jpg",
    imageCaption:"Frottis sanguin — anémie microcytaire hypochrome",
    prompt:"Ce frottis montre des hématies pâles avec zone centrale claire élargie (annulocytes), une micropopulation de très petites cellules et une poïkilocytose modérée. Ce profil correspond à :",
    choices:["Anémie hémolytique par sphérocytose héréditaire","Anémie ferriprive (carence en fer)","Polyglobulie de Vaquez (maladie de Vaquez)","Anémie aplasique profonde"],
@@ -320,7 +320,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Morphologie","Anémie ferriprive","Fer","Hypochromie","Microcytose"]},
 
   {id:"abm_vis9",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Reticulocyte.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/9/99/Reticulocytes_Human_Blood_Supravital_Stain.jpg",
    imageCaption:"Coloration supravitale au bleu de crésyl brillant — identification des réticulocytes",
    prompt:"La coloration supravitale au bleu de crésyl brillant révèle dans ces cellules un réseau (réticulum) bleuté précipité. Ces cellules sont des :",
    choices:["Érythrocytes matures normaux","Réticulocytes (érythrocytes jeunes avec ARNr résiduel)","Normoblastes orthochromatophiles médullaires","Corps de Heinz (précipités d'Hb dénaturée)"],
@@ -329,7 +329,7 @@ export const QB_ABM_HEMATO_VISUAL = [
    tags:["Réticulocytes","Érythropoïèse","Coloration supravitale","Régénération"]},
 
   {id:"abm_vis10",
-   image:"https://commons.wikimedia.org/wiki/Special:FilePath/Plasma_cell_myeloma_-_cytology_-_high_mag.jpg",
+   image:"https://upload.wikimedia.org/wikipedia/commons/d/d5/Multiple_myeloma.jpg",
    imageCaption:"Aspirat médullaire MGG — prolifération de cellules anormales",
    prompt:"Ces cellules ovales présentent un cytoplasme très basophile, un noyau excentré avec chromatine en « roue de charrette » et un halo périnucléaire clair (zone de Golgi). Il s'agit de :",
    choices:["Lymphocytes B activés (centroblastes)","Plasmocytes (différenciation terminale des lymphocytes B)","Myéloblastes de LAM","Monocytes médullaires activés"],
