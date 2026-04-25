@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect, createContext, useContext } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import { PROGRAM_ABM } from "./data/abm.js";
 import { PROGRAM_OL } from "./data/ol.js";
@@ -353,7 +353,12 @@ const QB_QUALITE_ISO = [
 ];
 
 // ─── THEME ───
-const T={bg:"#07060B",surface:"#12101B",card:"#161325",accent:"#C57AFF",accent2:"#902EDB",yellow:"#F0E547",green:"#4AEAAC",red:"#FF6370",blue:"#5EB5FF",orange:"#FFB259",pink:"#FF5DA0",text:"#EDE9F5",text2:"#A199B2",text3:"#6B6280",border:"rgba(255,255,255,0.05)",border2:"rgba(255,255,255,0.09)",r:16};
+const T_DARK={bg:"#07060B",surface:"#12101B",card:"#161325",accent:"#C57AFF",accent2:"#902EDB",yellow:"#F0E547",green:"#4AEAAC",red:"#FF6370",blue:"#5EB5FF",orange:"#FFB259",pink:"#FF5DA0",text:"#EDE9F5",text2:"#A199B2",text3:"#6B6280",border:"rgba(255,255,255,0.05)",border2:"rgba(255,255,255,0.09)",r:16};
+const T_LIGHT={bg:"#F5F3FF",surface:"#FFFFFF",card:"#EDEBF8",accent:"#7C3AED",accent2:"#5B21B6",yellow:"#D97706",green:"#059669",red:"#DC2626",blue:"#2563EB",orange:"#D97706",pink:"#DB2777",text:"#1A1527",text2:"#5C5478",text3:"#9288A8",border:"rgba(0,0,0,0.06)",border2:"rgba(0,0,0,0.10)",r:16};
+const T=T_DARK; // alias module-level pour QUIZ_THEMES, PROGRAMS (statique)
+const ThemeCtx=createContext(T_DARK);
+const ThemeProvider=ThemeCtx.Provider;
+const useT=()=>useContext(ThemeCtx);
 
 const QB_CR = [
   {id:"cr1",prompt:"Quelle est la différence entre une feuille d'enregistrement et un rapport d'essai ?",choices:["Ce sont deux noms pour le même document","La feuille d'enregistrement contient les résultats bruts en temps réel ; le rapport d'essai est un document formalisé transmis au client avec les résultats traités et la déclaration de conformité","Le rapport d'essai est rempli pendant la manipulation","La feuille d'enregistrement est destinée au client"],answer:1,diff:1,explication:"Feuille d'enregistrement = traçabilité interne, remplie en temps réel, résultats bruts. Rapport d'essai = document formalisé (ISO 17025), résultats traités + incertitude + déclaration de conformité, signé par un approbateur. Le compte-rendu de TP simule le rapport d'essai.",tags:["Compte-rendu","Feuille enregistrement","Rapport d'essai","ISO 17025"]},
@@ -829,21 +834,22 @@ function useLS(key,def){
 }
 
 function WelcomeModal({onConfirm}){
+  const T=useT();
   const[name,setName]=useState("");
   const ok=()=>{const n=name.trim();if(n)onConfirm(n);};
   return(
-    <div style={{position:"fixed",inset:0,background:"#07060BDD",backdropFilter:"blur(12px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-      <div style={{background:"#12101A",border:"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"40px 36px",maxWidth:420,width:"100%",animation:"fu .3s"}}>
+    <div style={{position:"fixed",inset:0,background:`${T.bg}DD`,backdropFilter:"blur(12px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div style={{background:T.card,border:`1px solid ${T.border2}`,borderRadius:20,padding:"40px 36px",maxWidth:420,width:"100%",animation:"fu .3s"}}>
         <div style={{fontSize:40,marginBottom:16,textAlign:"center"}}>🎓</div>
         <h2 style={{fontSize:22,fontWeight:800,marginBottom:8,textAlign:"center"}}>Bienvenue sur Picpus House</h2>
-        <p style={{color:"#A199B2",fontSize:13.5,textAlign:"center",marginBottom:28,lineHeight:1.6}}>Pour suivre ta progression entre tes sessions de révision, entre ton prénom.</p>
+        <p style={{color:T.text2,fontSize:13.5,textAlign:"center",marginBottom:28,lineHeight:1.6}}>Pour suivre ta progression entre tes sessions de révision, entre ton prénom.</p>
         <input
           autoFocus
           value={name}
           onChange={e=>setName(e.target.value)}
           onKeyDown={e=>e.key==="Enter"&&ok()}
           placeholder="Ton prénom…"
-          style={{width:"100%",padding:"13px 16px",borderRadius:12,border:"1.5px solid rgba(255,255,255,0.12)",background:"#1C1828",color:"#fff",fontSize:15,outline:"none",marginBottom:16,fontFamily:"inherit"}}
+          style={{width:"100%",padding:"13px 16px",borderRadius:12,border:`1.5px solid ${T.border2}`,background:T.surface,color:T.text,fontSize:15,outline:"none",marginBottom:16,fontFamily:"inherit"}}
         />
         <button onClick={ok} disabled={!name.trim()} style={{width:"100%",padding:"13px",borderRadius:12,background:name.trim()?"linear-gradient(135deg,#C57AFF,#902EDB)":"#2A2535",color:name.trim()?"#fff":"#6B6280",fontSize:15,fontWeight:700,border:"none",cursor:name.trim()?"pointer":"default",transition:"all .2s"}}>
           Commencer les révisions →
@@ -854,6 +860,7 @@ function WelcomeModal({onConfirm}){
 }
 
 function StudentBadge({name,onChangeName}){
+  const T=useT();
   const[open,setOpen]=useState(false);
   const initials=name.slice(0,2).toUpperCase();
   return(
@@ -883,6 +890,8 @@ export default function App(){
   // ── Persistance étudiant ──
   const[studentName,setStudentName]=useLS("btsr_student",null);
   const[allProgress,setAllProgress]=useLS("btsr_progress",{});
+  const[darkMode,setDarkMode]=useLS("btsr_theme",true);
+  const T=darkMode?T_DARK:T_LIGHT;
 
   const completed=allProgress[studentName]?.completed||{};
   const qResults=allProgress[studentName]?.qr||{};
@@ -917,8 +926,9 @@ export default function App(){
   };
 
   return(
-    <div style={{minHeight:"100vh",background:`linear-gradient(170deg,#07060B,#0F0C18 50%,#0A0812)`,color:T.text,fontFamily:"'Sora','DM Sans',system-ui,sans-serif"}}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:#07060B}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:${T.text3}30;border-radius:3px}::selection{background:${T.accent}40}input::placeholder{color:${T.text3}}@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes fi{from{opacity:0}to{opacity:1}}.hl{transition:transform .2s,box-shadow .2s,border-color .2s}.hl:hover{transform:translateY(-2px);border-color:${T.accent}30!important}.qo{transition:all .15s;cursor:pointer}.qo:hover:not([disabled]){transform:translateX(4px);border-color:${T.accent}40!important}`}</style>
+    <ThemeProvider value={T}>
+    <div style={{minHeight:"100vh",background:T.bg,color:T.text,fontFamily:"'Sora','DM Sans',system-ui,sans-serif",transition:"background .25s,color .25s"}}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{background:${T.bg}}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:${T.text3}30;border-radius:3px}::selection{background:${T.accent}40}input::placeholder{color:${T.text3}}@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes fi{from{opacity:0}to{opacity:1}}.hl{transition:transform .2s,box-shadow .2s,border-color .2s}.hl:hover{transform:translateY(-2px);border-color:${T.accent}30!important}.qo{transition:all .15s;cursor:pointer}.qo:hover:not([disabled]){transform:translateX(4px);border-color:${T.accent}40!important}`}</style>
 
       {!studentName&&<WelcomeModal onConfirm={n=>setStudentName(n)}/>}
       {showAdmin&&<AdminDashboard onClose={()=>setShowAdmin(false)}/>}
@@ -931,6 +941,7 @@ export default function App(){
             <div style={{flex:1}}><div style={{fontWeight:800,fontSize:15.5,letterSpacing:-.3}}>Picpus House</div><div style={{fontSize:9,color:T.text3,fontWeight:700,letterSpacing:2,textTransform:"uppercase"}}>Plateforme Révisions BTS · {totalQ} questions</div></div>
             <div style={{position:"relative",width:200}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Rechercher…" style={{width:"100%",padding:"9px 14px 9px 32px",borderRadius:10,border:`1px solid ${T.border2}`,background:T.surface,color:T.text,fontSize:12,outline:"none"}}/><span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:12,opacity:.35}}>🔍</span></div>
             {studentName&&<StudentBadge name={studentName} onChangeName={()=>setStudentName(null)}/>}
+            <button onClick={()=>setDarkMode(d=>!d)} title={darkMode?"Mode jour":"Mode nuit"} style={{width:32,height:32,borderRadius:9,border:`1px solid ${T.border}`,background:T.surface,color:T.text3,cursor:"pointer",fontSize:16,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{darkMode?"☀️":"🌙"}</button>
             <button onClick={()=>setShowAdmin(true)} title="Administration" style={{width:32,height:32,borderRadius:9,border:`1px solid ${T.border}`,background:T.surface,color:T.text3,cursor:"pointer",fontSize:15,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>🔐</button>
           </div>
           <div style={{display:"flex",gap:3,overflowX:"auto"}}>{PROGRAMS.map(p=><button key={p.id} onClick={()=>switchProg(p.id)} style={{padding:"7px 14px",borderRadius:9,border:pid===p.id?`1.5px solid ${p.color}50`:"1.5px solid transparent",background:pid===p.id?`${p.color}12`:"transparent",color:pid===p.id?p.color:T.text3,fontSize:11.5,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}><span style={{marginRight:4}}>{p.icon}</span>{p.short}</button>)}</div>
@@ -963,18 +974,20 @@ export default function App(){
 
       <footer style={{borderTop:`1px solid ${T.border}`,padding:"16px",textAlign:"center",fontSize:10,color:T.text3}}>Picpus House — BDE Campus Picpus · Aurlom Éducation · 2025–2026</footer>
     </div>
+    </ThemeProvider>
   );
 }
 
 // ─── SHARED ───
 function Pill({c,children}){return <span style={{fontSize:9.5,background:`${c}20`,color:c,padding:"2px 7px",borderRadius:7,fontWeight:700}}>{children}</span>}
-function Badge({c,children}){return <span style={{display:"inline-block",padding:"3px 9px",borderRadius:16,fontSize:10,fontWeight:700,background:`${c||T.accent}15`,color:c||T.accent,border:`1px solid ${c||T.accent}25`}}>{children}</span>}
-function SH({icon,title,sub,c}){return <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:24,padding:"18px 22px",borderRadius:T.r,background:`linear-gradient(135deg,${c}08,${c}03)`,border:`1px solid ${c}12`}}><span style={{fontSize:34}}>{icon}</span><div><h2 style={{fontSize:19,fontWeight:800,lineHeight:1.2}}>{title}</h2>{sub&&<p style={{fontSize:12,color:T.text3,marginTop:3}}>{sub}</p>}</div></div>}
-function Empty({msg,hint}){return <div style={{textAlign:"center",padding:"56px 20px"}}><div style={{fontSize:44,marginBottom:10,opacity:.5}}>📭</div><div style={{fontSize:14,fontWeight:600,color:T.text2}}>{msg}</div>{hint&&<div style={{fontSize:12,color:T.text3,marginTop:5}}>{hint}</div>}</div>}
-function Back({onClick,label="Retour"}){return <button onClick={onClick} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",fontSize:12.5,fontWeight:600,marginBottom:14,display:"flex",alignItems:"center",gap:5}}>← {label}</button>}
+function Badge({c,children}){const T=useT();return <span style={{display:"inline-block",padding:"3px 9px",borderRadius:16,fontSize:10,fontWeight:700,background:`${c||T.accent}15`,color:c||T.accent,border:`1px solid ${c||T.accent}25`}}>{children}</span>}
+function SH({icon,title,sub,c}){const T=useT();return <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:24,padding:"18px 22px",borderRadius:T.r,background:`linear-gradient(135deg,${c}08,${c}03)`,border:`1px solid ${c}12`}}><span style={{fontSize:34}}>{icon}</span><div><h2 style={{fontSize:19,fontWeight:800,lineHeight:1.2}}>{title}</h2>{sub&&<p style={{fontSize:12,color:T.text3,marginTop:3}}>{sub}</p>}</div></div>}
+function Empty({msg,hint}){const T=useT();return <div style={{textAlign:"center",padding:"56px 20px"}}><div style={{fontSize:44,marginBottom:10,opacity:.5}}>📭</div><div style={{fontSize:14,fontWeight:600,color:T.text2}}>{msg}</div>{hint&&<div style={{fontSize:12,color:T.text3,marginTop:5}}>{hint}</div>}</div>}
+function Back({onClick,label="Retour"}){const T=useT();return <button onClick={onClick} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",fontSize:12.5,fontWeight:600,marginBottom:14,display:"flex",alignItems:"center",gap:5}}>← {label}</button>}
 
 // ═══ REFERENTIEL ═══
 function RefView({prog,search}){
+  const T=useT();
   const[open,setOpen]=useState({});
   const q=search.toLowerCase();
   const filtered=prog.blocs.map(b=>({...b,competences:b.competences.filter(c=>!q||c.label.toLowerCase().includes(q)||c.id.toLowerCase().includes(q)||c.savoirs.some(s=>s.toLowerCase().includes(q)))})).filter(b=>b.competences.length>0);
@@ -999,6 +1012,7 @@ function RefView({prog,search}){
 
 // ═══ FICHES ═══
 function FichesList({prog,search,done,onPick}){
+  const T=useT();
   const q=search.toLowerCase();const fiches=prog.fiches.filter(f=>!q||f.title.toLowerCase().includes(q)||f.tags.some(t=>t.toLowerCase().includes(q)));
   if(!prog.fiches.length)return <Empty msg="Fiches en cours de création" hint="Les fiches BIOALC sont disponibles !"/>;
   const nc={Fondations:T.green,Intermédiaire:T.orange,Avancé:T.red};
@@ -1014,7 +1028,7 @@ function FichesList({prog,search,done,onPick}){
   </div>;
 }
 
-function renderInline(text,c){
+function renderInline(text,c,T=T_DARK){
   if(!text)return text;
   const parts=text.split(/(\*\*.*?\*\*|\*[^*]+\*)/);
   if(parts.length===1)return text;
@@ -1025,6 +1039,7 @@ function renderInline(text,c){
   });
 }
 function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
+  const T=useT();
   const nc={Fondations:T.green,Intermédiaire:T.orange,Avancé:T.red,2:T.orange,3:T.red};
   const lines=f.contenu.split("\n");
   // Group consecutive table lines
@@ -1048,8 +1063,8 @@ function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
         <tbody>{parsed.map((row,ri)=>(
           <tr key={ri} style={{background:ri===0?`${c}18`:ri%2===0?"transparent":`rgba(255,255,255,0.025)`}}>
             {row.map((cell,ci)=>ri===0
-              ? <th key={ci} style={{padding:"7px 12px",border:`1px solid ${T.border2}`,textAlign:"left",fontWeight:700,color:c,fontSize:11.5,whiteSpace:"nowrap"}}>{renderInline(cell,c)}</th>
-              : <td key={ci} style={{padding:"6px 12px",border:`1px solid ${T.border2}`,color:T.text,verticalAlign:"top"}}>{renderInline(cell,c)}</td>
+              ? <th key={ci} style={{padding:"7px 12px",border:`1px solid ${T.border2}`,textAlign:"left",fontWeight:700,color:c,fontSize:11.5,whiteSpace:"nowrap"}}>{renderInline(cell,c,T)}</th>
+              : <td key={ci} style={{padding:"6px 12px",border:`1px solid ${T.border2}`,color:T.text,verticalAlign:"top"}}>{renderInline(cell,c,T)}</td>
             )}
           </tr>
         ))}</tbody>
@@ -1062,12 +1077,12 @@ function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
     if(l.startsWith("### "))return <div key={gi} style={{fontWeight:700,fontSize:13.5,color:T.text,marginTop:12,marginBottom:3}}>{renderInline(l.slice(4),c)}</div>;
     if(l.startsWith("**")&&l.endsWith("**"))return <div key={gi} style={{fontWeight:700,fontSize:13.5,color:c,marginTop:12,marginBottom:3}}>{l.slice(2,-2)}</div>;
     if(l.startsWith("• ")||l.startsWith("▸ "))return <div key={gi} style={{paddingLeft:16,position:"relative",marginBottom:1}}><span style={{position:"absolute",left:0,color:c}}>{l[0]}</span>{renderInline(l.slice(2),c)}</div>;
-    if(/^\d+\.\s/.test(l))return <div key={gi} style={{paddingLeft:16,marginBottom:1}}>{renderInline(l,c)}</div>;
+    if(/^\d+\.\s/.test(l))return <div key={gi} style={{paddingLeft:16,marginBottom:1}}>{renderInline(l,c,T)}</div>;
     if(l.startsWith("→ ")||l.startsWith("→  "))return <div key={gi} style={{paddingLeft:14,color:T.text2,marginBottom:1}}><span style={{color:c}}>→</span> {renderInline(l.replace(/^→\s+/,""),c)}</div>;
     if(l.startsWith("✓ ")||l.startsWith("✗ "))return <div key={gi} style={{paddingLeft:16,position:"relative",marginBottom:1}}><span style={{position:"absolute",left:0,color:l[0]==="✓"?T.green:"#FF6370"}}>{l[0]}</span>{renderInline(l.slice(2),c)}</div>;
     if(l.startsWith("---"))return <hr key={gi} style={{border:"none",borderTop:`1px solid ${T.border2}`,margin:"10px 0"}}/>;
     if(l.startsWith("①")||l.startsWith("②")||l.startsWith("③"))return <div key={gi} style={{paddingLeft:22,position:"relative",marginBottom:2}}><span style={{position:"absolute",left:0,color:c,fontWeight:700}}>{l.match(/^[①-⑩]/)[0]}</span>{renderInline(l.slice(2),c)}</div>;
-    return <div key={gi}>{renderInline(l,c)}</div>;
+    return <div key={gi}>{renderInline(l,c,T)}</div>;
   };
   return <div style={{animation:"fu .3s"}}><Back onClick={onBack} label="Retour aux fiches"/>
     <div style={{background:T.card,border:`1px solid ${T.border2}`,borderRadius:T.r,padding:"26px",maxWidth:820}}>
@@ -1111,6 +1126,7 @@ function FicheDetail({f,c,isDone,onDone,onBack,onQuiz}){
 
 // ═══ QUIZ HUB ═══
 function QuizHub({prog,search,res,onPickTheme}){
+  const T=useT();
   const q=search.toLowerCase();
   const themes=prog.quizThemes.filter(t=>!q||t.title.toLowerCase().includes(q)||t.tags.some(tg=>tg.toLowerCase().includes(q)));
   if(!prog.quizThemes.length)return <Empty msg="Quiz en cours de création" hint="170+ questions disponibles pour BIOALC !"/>;
@@ -1133,6 +1149,7 @@ function QuizHub({prog,search,res,onPickTheme}){
 }
 
 function QuizModeSelect({theme,onStart,onBack}){
+  const T=useT();
   return <div style={{animation:"fu .3s",maxWidth:600,margin:"0 auto"}}>
     <Back onClick={onBack} label="Tous les thèmes"/>
     <SH icon="🎯" title={theme.title} sub={`${theme.bank.length} questions dans la banque`} c={theme.color||T.accent}/>
@@ -1155,6 +1172,7 @@ function QuizModeSelect({theme,onStart,onBack}){
 
 // ═══ QUIZ PLAY ═══
 function QuizPlay({quiz,mode,s,setS,c,onDone,onBack,onBackToThemes}){
+  const T=useT();
   const{i,ans,sc,fin,questions}=s;
   if(!questions||!questions.length)return <Empty msg="Pas de questions disponibles"/>;
   const q=questions[i];const picked=ans[q?.id];const show=picked!==undefined;
@@ -1212,6 +1230,7 @@ function QuizPlay({quiz,mode,s,setS,c,onDone,onBack,onBackToThemes}){
 
 // ═══ ANNALES ═══
 function AnnView({prog,search}){
+  const T=useT();
   const q=search.toLowerCase();const ann=prog.annales.filter(a=>!q||a.epreuve.toLowerCase().includes(q)||a.themes.some(t=>t.toLowerCase().includes(q)));
   if(!prog.annales.length)return <Empty msg="Annales en cours d'ajout" hint="Disponibles pour BIOALC !"/>;
   return <div><SH icon="📚" title="Annales & sujets" sub={`${ann.length} sujets · Cliquez sur 📥 pour ouvrir le PDF`} c={prog.color}/>
@@ -1227,6 +1246,7 @@ function AnnView({prog,search}){
 
 // ═══ PROGRESSION ═══
 function ProgView({prog,pid,done,qr}){
+  const T=useT();
   const tF=prog.fiches.length;const dF=Object.keys(done).filter(k=>k.startsWith(pid)).length;
   const pF=tF?Math.round((dF/tF)*100):0;
   const totalQ=prog.quizThemes.reduce((a,t)=>a+t.bank.length,0);
@@ -1267,7 +1287,7 @@ function ProgView({prog,pid,done,qr}){
   </div>;
 }
 
-function SC({l,v,p,c}){return <div style={{background:T.card,borderRadius:13,padding:"18px",border:`1px solid ${T.border2}`}}>
+function SC({l,v,p,c}){const T=useT();return <div style={{background:T.card,borderRadius:13,padding:"18px",border:`1px solid ${T.border2}`}}>
   <div style={{fontSize:10,color:T.text3,fontWeight:600,marginBottom:7,textTransform:"uppercase",letterSpacing:.7}}>{l}</div>
   <div style={{fontSize:26,fontWeight:800,color:c,marginBottom:8}}>{v}</div>
   <div style={{height:4,borderRadius:2,background:`${T.text3}0C`}}><div style={{height:"100%",borderRadius:2,background:c,width:`${p}%`,transition:"width .7s"}}/></div>
@@ -1292,6 +1312,7 @@ const EN_FILIERE_LABELS={bioalc:"BIOALC",abm:"ABM",bm:"BM",ol:"Opticien-Lunetier
 
 // ─── ENGLISH HOME ───
 function EnglishApp({color}){
+  const T=useT();
   const[filiere,setFiliere]=useState(null);
   const[mode,setMode]=useState(null);
   const filieres=Object.keys(EN_FILIERE_LABELS);
@@ -1326,6 +1347,7 @@ function EnglishApp({color}){
 
 // ─── VOCAB ───
 function EnglishVocab({filiere,color,onBack}){
+  const T=useT();
   const bank=ENGLISH_VOCAB[filiere]||[];
   const[items]=useState(()=>shuffle(bank));
   const[idx,setIdx]=useState(0);
@@ -1392,6 +1414,7 @@ function EnglishVocab({filiere,color,onBack}){
 
 // ─── PRONUNCIATION ───
 function EnglishPronunciation({filiere,color,onBack}){
+  const T=useT();
   const bank=ENGLISH_VOCAB[filiere]||[];
   const[items]=useState(()=>shuffle(bank));
   const[idx,setIdx]=useState(0);
@@ -1454,6 +1477,7 @@ function EnglishPronunciation({filiere,color,onBack}){
 
 // ─── DICTATION ───
 function EnglishDictation({filiere,color,onBack}){
+  const T=useT();
   const bank=ENGLISH_VOCAB[filiere]||[];
   const[items]=useState(()=>shuffle(bank));
   const[idx,setIdx]=useState(0);
@@ -1510,6 +1534,7 @@ function EnglishDictation({filiere,color,onBack}){
 
 // ─── LISTENING ───
 function EnglishListening({filiere,color,onBack}){
+  const T=useT();
   const bank=ENGLISH_LISTENING[filiere]||[];
   const[exIdx,setExIdx]=useState(0);
   const[phase,setPhase]=useState("intro");// intro | playing | questions | result
