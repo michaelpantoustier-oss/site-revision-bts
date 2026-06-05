@@ -823,6 +823,7 @@ const PROGRAMS=[
   PROGRAM_PRODENT,
   {id:"english",short:"EN",name:"Anglais professionnel",color:"#3B82F6",icon:"🇬🇧",blocs:[],fiches:[],quizThemes:[],annales:[]},
   PROGRAM_CGE,
+  {id:"calc",short:"📊",name:"Estimateur de moyenne",color:"#F0E547",icon:"📊",blocs:[],fiches:[],quizThemes:[],annales:[]},
 ];
 
 const SECTIONS=[{id:"referentiel",label:"Référentiel",icon:"📋"},{id:"fiches",label:"Fiches",icon:"📝"},{id:"quiz",label:"Quiz",icon:"🎯"},{id:"annales",label:"Annales",icon:"📚"},{id:"progression",label:"Progression",icon:"📊"}];
@@ -881,6 +882,204 @@ function StudentBadge({name,onChangeName}){
     </div>
   );
 }
+
+// ─── BTS GRILLES EXAMENS ───
+const BTS_GRILLES={
+  abm:{name:"BTS ABM",color:"#5EB5FF",
+    epreuves:[
+      {id:"e1", label:"Langue vivante étrangère (LV1)",code:"U1",coeff:2},
+      {id:"e2", label:"Mathématiques",code:"U2",coeff:1},
+      {id:"e3", label:"Sciences physiques et chimiques",code:"U3",coeff:2},
+      {id:"e41",label:"Biochimie",code:"U41",coeff:2,groupe:"E4 — Bases scientifiques et technologiques"},
+      {id:"e42",label:"Microbiologie",code:"U42",coeff:2,groupe:"E4 — Bases scientifiques et technologiques"},
+      {id:"e43",label:"Hématologie – Anatomopathologie – Immunologie",code:"U43",coeff:2,groupe:"E4 — Bases scientifiques et technologiques"},
+      {id:"e51",label:"Analyses de biochimie médicale",code:"U51",coeff:2.5,groupe:"E5 — Analyses de biologie médicale"},
+      {id:"e52",label:"Analyses de microbiologie médicale",code:"U52",coeff:3,groupe:"E5 — Analyses de biologie médicale"},
+      {id:"e53",label:"Analyses d'hématologie et anatomopathologie",code:"U53",coeff:1.5,groupe:"E5 — Analyses de biologie médicale"},
+      {id:"e6", label:"Soutenance de rapport de stages",code:"U6",coeff:3},
+    ],
+    facultatives:[{id:"ef1",label:"Langue vivante 2",code:"UF1",coeff_fac:1}]},
+  bioalc:{name:"BTS BIOALC",color:"#C57AFF",
+    epreuves:[
+      {id:"e11",label:"Culture générale et expression",code:"U11",coeff:1,groupe:"E1 — Cultures et langues"},
+      {id:"e12",label:"Anglais",code:"U12",coeff:1,groupe:"E1 — Cultures et langues"},
+      {id:"e21",label:"Mathématiques",code:"U21",coeff:1,groupe:"E2 — Mathématiques et Physique-chimie"},
+      {id:"e22",label:"Physique-chimie",code:"U22",coeff:1,groupe:"E2 — Mathématiques et Physique-chimie"},
+      {id:"e3", label:"Gestion opérationnelle et documentaire du laboratoire",code:"U3",coeff:2},
+      {id:"e4", label:"Réalisation des analyses au laboratoire (contrôle qualité)",code:"U4",coeff:6},
+      {id:"e5", label:"Expertise au laboratoire — optimisation des méthodes de bioanalyse",code:"U5",coeff:4},
+      {id:"e6", label:"Relations professionnelles au laboratoire",code:"U6",coeff:2},
+    ],
+    facultatives:[
+      {id:"ef1",label:"Langue vivante 2 (hors anglais)",code:"UF1",coeff_fac:1},
+      {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
+    ]},
+  ol:{name:"BTS OL",color:"#4AEAAC",
+    epreuves:[
+      {id:"e1", label:"Culture générale et expression",code:"U1",coeff:2},
+      {id:"e2", label:"Langue vivante étrangère 1",code:"U2",coeff:2},
+      {id:"e3", label:"Économie et gestion de l'entreprise",code:"U3",coeff:5},
+      {id:"e41",label:"Mathématiques",code:"U41",coeff:2,groupe:"E4 — Systèmes optiques (total 8)"},
+      {id:"e42",label:"Optique géométrique et physique",code:"U42",coeff:3,groupe:"E4 — Systèmes optiques (total 8)"},
+      {id:"e43",label:"Étude technique des systèmes optiques",code:"U43",coeff:3,groupe:"E4 — Systèmes optiques (total 8)"},
+      {id:"e5", label:"Analyse du problème visuel",code:"U5",coeff:6},
+      {id:"e61",label:"Examen de vue et prises de mesures et adaptation",code:"U61",coeff:4,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
+      {id:"e62",label:"Contrôle d'équipement et réalisation technique",code:"U62",coeff:4,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
+      {id:"e63",label:"Activités en milieu professionnel",code:"U63",coeff:2,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
+    ],
+    facultatives:[
+      {id:"ef1",label:"Langue vivante 2",code:"UF1",coeff_fac:1},
+      {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
+    ]},
+  prodent:{name:"BTS PRODENT",color:"#FFB259",
+    epreuves:[
+      {id:"e1",label:"Sciences",code:"U1",coeff:2},
+      {id:"e2",label:"Culture générale et expression",code:"U2",coeff:1},
+      {id:"e3",label:"Anglais",code:"U3",coeff:1},
+      {id:"e4",label:"Élaboration d'un projet prothétique en concertation avec un praticien",code:"U4",coeff:3},
+      {id:"e5",label:"Fabrication d'une prothèse fonctionnelle et esthétique (méthode traditionnelle ou numérique)",code:"U5",coeff:6},
+      {id:"e6",label:"Management et entrepreneuriat en prothèse dentaire",code:"U6",coeff:3},
+    ],
+    facultatives:[
+      {id:"ef1",label:"Langue vivante",code:"UF1",coeff_fac:0.5},
+      {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
+    ]},
+  fed:{name:"BTS FED C",color:"#FF6370",
+    note:"⚠️ Coefficients estimés — vérifier sur le référentiel officiel BTS FED",
+    epreuves:[
+      {id:"e1", label:"Culture générale et expression",code:"U11",coeff:2},
+      {id:"e2", label:"Langue vivante anglais",code:"U12",coeff:2},
+      {id:"e31",label:"Mathématiques",code:"U31",coeff:2,groupe:"E3 — Mathématiques et Sciences Physiques Appliquées"},
+      {id:"e32",label:"Sciences Physiques Appliquées",code:"U32",coeff:2,groupe:"E3 — Mathématiques et Sciences Physiques Appliquées"},
+      {id:"e41",label:"Bases technologiques des installations",code:"U41",coeff:4,groupe:"E4 — Étude des systèmes"},
+      {id:"e42",label:"Étude de cas industriel",code:"U42",coeff:3,groupe:"E4 — Étude des systèmes"},
+      {id:"e5", label:"Mise en œuvre des installations (CCF)",code:"U5",coeff:6},
+      {id:"e61",label:"Épreuve professionnelle E61",code:"U61",coeff:4,groupe:"E6 — Épreuve de synthèse professionnelle"},
+      {id:"e62",label:"Épreuve professionnelle E62",code:"U62",coeff:3,groupe:"E6 — Épreuve de synthèse professionnelle"},
+    ],
+    facultatives:[
+      {id:"ef1",label:"Langue vivante 2",code:"UF1",coeff_fac:1},
+      {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
+    ]},
+};
+
+function GradeCalculator(){
+  const T=useT();
+  const[bts,setBts]=useState("abm");
+  const[grades,setGrades]=useState({});
+  const grille=BTS_GRILLES[bts];
+  const c=grille.color;
+  const allEp=grille.epreuves;
+  const allFac=grille.facultatives||[];
+  const setGrade=(id,v)=>setGrades(p=>({...p,[id]:v}));
+  const resetAll=()=>setGrades({});
+
+  const totalCoeff=allEp.reduce((s,e)=>s+e.coeff,0);
+  const enteredEp=allEp.filter(e=>grades[e.id]!==undefined&&grades[e.id]!=="");
+  const sumPts=enteredEp.reduce((s,e)=>s+(parseFloat(grades[e.id])||0)*e.coeff,0);
+  const usedCoeff=enteredEp.reduce((s,e)=>s+e.coeff,0);
+  const moyEnCours=usedCoeff>0?sumPts/usedCoeff:null;
+  const allFilled=enteredEp.length===allEp.length;
+  const moyFinale=allFilled?sumPts/totalCoeff:null;
+  const facBonus=allFac.reduce((s,f)=>{const g=parseFloat(grades[f.id])||0;return s+(g>10?(g-10)*(f.coeff_fac||1):0);},0);
+  const moyRef=moyFinale??moyEnCours;
+  const moyAvecFac=allFilled?(sumPts+facBonus)/totalCoeff:null;
+  const displayMoy=moyAvecFac??moyEnCours;
+  const barColor=displayMoy==null?T.text3:displayMoy>=12?T.green:displayMoy>=10?T.yellow:T.red;
+
+  const groups={};const ungrouped=[];
+  allEp.forEach(e=>{if(e.groupe){if(!groups[e.groupe])groups[e.groupe]=[];groups[e.groupe].push(e);}else ungrouped.push(e);});
+  const groupKeys=Object.keys(groups);
+  const half=Math.ceil(groupKeys.length/2);
+
+  const GRow=({e,fac})=>{
+    const v=grades[e.id]??'';const n=parseFloat(v);const ok=!isNaN(n)&&n>=0&&n<=20;
+    const pts=ok&&v!==''?(fac?(n>10?(n-10)*(e.coeff_fac||1):0):n*e.coeff):null;
+    const ptsColor=fac?(pts>0?T.green:T.text3):(ok&&n>=10?T.green:T.red);
+    return <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",borderRadius:8,background:T.surface,border:`1px solid ${ok&&v!==''?(fac?(pts>0?`${T.green}30`:T.border):(n>=10?`${T.green}25`:`${T.red}25`)):T.border}`,marginBottom:3}}>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontSize:12,fontWeight:600,color:fac?T.text2:T.text,lineHeight:1.25}}>{e.label}</div>
+        <div style={{fontSize:10,color:T.text3,marginTop:1}}>{e.code} · coeff {e.coeff_fac??e.coeff}{fac?" · points > 10 comptent":""}</div>
+      </div>
+      {pts!==null&&<div style={{fontSize:10.5,fontWeight:700,color:ptsColor,minWidth:38,textAlign:"right",flexShrink:0}}>{fac&&pts>0?"+":""}{pts.toFixed(1)}pts</div>}
+      <input type="number" min="0" max="20" step="0.5" placeholder="—" value={v}
+        onChange={ev=>setGrade(e.id,ev.target.value)}
+        style={{width:58,padding:"6px 7px",borderRadius:7,border:`1.5px solid ${ok&&v!==''?(fac?(pts>0?T.green:T.border2):(n>=10?T.green:T.red)):T.border2}`,background:T.card,color:T.text,fontSize:13,fontWeight:700,textAlign:"center",outline:"none",flexShrink:0}}/>
+    </div>;
+  };
+
+  return <div style={{animation:"fu .3s"}}>
+    <SH icon="📊" title="Estimateur de moyenne BTS" sub="Saisissez vos notes estimées · Pour les épreuves facultatives : seuls les points au-dessus de 10 sont pris en compte" c={T.yellow}/>
+
+    {/* Sélecteur BTS */}
+    <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap"}}>
+      {Object.entries(BTS_GRILLES).map(([key,g])=><button key={key} onClick={()=>{setBts(key);resetAll();}} style={{padding:"8px 15px",borderRadius:9,border:`1.5px solid ${bts===key?g.color:T.border2}`,background:bts===key?`${g.color}15`:T.surface,color:bts===key?g.color:T.text2,fontWeight:bts===key?700:500,fontSize:12,cursor:"pointer",whiteSpace:"nowrap",transition:"all .15s"}}>{g.name}</button>)}
+    </div>
+
+    {grille.note&&<div style={{padding:"9px 13px",borderRadius:8,background:`${T.orange}10`,border:`1px solid ${T.orange}28`,fontSize:11.5,color:T.orange,marginBottom:14}}>{grille.note}</div>}
+
+    {/* Grille de saisie */}
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(320px,1fr))",gap:14,marginBottom:20}}>
+      <div>
+        {ungrouped.map(e=><GRow key={e.id} e={e} fac={false}/>)}
+        {groupKeys.slice(0,half).map(gn=><div key={gn} style={{marginBottom:10}}>
+          <div style={{fontSize:10.5,fontWeight:700,color:c,marginBottom:4,paddingLeft:2,textTransform:"uppercase",letterSpacing:.5}}>{gn}</div>
+          {groups[gn].map(e=><GRow key={e.id} e={e} fac={false}/>)}
+        </div>)}
+      </div>
+      <div>
+        {groupKeys.slice(half).map(gn=><div key={gn} style={{marginBottom:10}}>
+          <div style={{fontSize:10.5,fontWeight:700,color:c,marginBottom:4,paddingLeft:2,textTransform:"uppercase",letterSpacing:.5}}>{gn}</div>
+          {groups[gn].map(e=><GRow key={e.id} e={e} fac={false}/>)}
+        </div>)}
+        {allFac.length>0&&<div style={{marginTop:4}}>
+          <div style={{fontSize:10.5,fontWeight:700,color:T.text3,marginBottom:6,paddingLeft:2,textTransform:"uppercase",letterSpacing:.5}}>🎖️ Épreuves facultatives</div>
+          <div style={{padding:"8px 10px",borderRadius:7,background:`${T.text3}06`,border:`1px solid ${T.border}`,fontSize:11,color:T.text3,lineHeight:1.5,marginBottom:6}}>Seuls les <strong style={{color:T.text}}>points au-dessus de 10</strong> comptent.<br/>Ex : note 14 → +4 pts × coeff</div>
+          {allFac.map(f=><GRow key={f.id} e={f} fac={true}/>)}
+        </div>}
+      </div>
+    </div>
+
+    {/* Résultats */}
+    {usedCoeff>0&&<div style={{background:T.card,borderRadius:T.r,padding:"24px 26px",border:`1.5px solid ${barColor}35`}}>
+      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",flexWrap:"wrap",gap:16,marginBottom:16}}>
+        <div>
+          <div style={{fontSize:10.5,color:T.text3,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>
+            {allFilled?"Moyenne finale estimée":"Moyenne provisoire"} · {enteredEp.length}/{allEp.length} épreuves saisies
+          </div>
+          <div style={{fontSize:52,fontWeight:900,color:barColor,lineHeight:1,letterSpacing:-2}}>
+            {(displayMoy??0).toFixed(2)}<span style={{fontSize:20,color:T.text3,fontWeight:400}}>/20</span>
+          </div>
+          {facBonus>0&&<div style={{fontSize:11.5,color:T.green,marginTop:4,fontWeight:600}}>
+            ✦ dont +{(facBonus/totalCoeff).toFixed(2)} pts apportés par les épreuves facultatives
+          </div>}
+          {moyRef!==null&&moyRef<10&&<div style={{fontSize:11.5,color:T.red,marginTop:4}}>
+            Il manque {((10-moyRef)*totalCoeff/totalCoeff).toFixed(2)} points/épreuve en moyenne pour atteindre 10
+          </div>}
+        </div>
+        <div style={{textAlign:"right"}}>
+          <div style={{fontSize:38,marginBottom:6}}>
+            {displayMoy==null?"⏳":displayMoy>=12?"🎓":displayMoy>=10?"✅":"⚠️"}
+          </div>
+          <div style={{fontSize:12,fontWeight:700,color:barColor}}>
+            {displayMoy==null?"—":displayMoy>=10?"Admis(e)":"En dessous du seuil"}
+          </div>
+          <div style={{fontSize:10.5,color:T.text3,marginTop:2}}>Seuil : 10/20 · Total coeff : {totalCoeff}</div>
+        </div>
+      </div>
+      <div style={{height:7,borderRadius:3,background:`${T.text3}10`}}>
+        <div style={{height:"100%",borderRadius:3,background:barColor,width:`${Math.min(100,((displayMoy??0)/20)*100)}%`,transition:"width .5s"}}/>
+      </div>
+      {allFilled&&enteredEp.length>0&&<div style={{marginTop:14,display:"flex",flexWrap:"wrap",gap:5}}>
+        {allEp.map(e=>{const n=parseFloat(grades[e.id]);if(isNaN(n))return null;const ok=n>=10;return <div key={e.id} style={{padding:"4px 9px",borderRadius:6,background:ok?`${T.green}08`:`${T.red}08`,border:`1px solid ${ok?`${T.green}20`:`${T.red}20`}`,fontSize:10.5}}>
+          <span style={{color:ok?T.green:T.red,fontWeight:700}}>{ok?"✓":"✗"}</span> {e.code} {n.toFixed(1)}
+        </div>;})}
+      </div>}
+      <button onClick={resetAll} style={{marginTop:14,padding:"7px 16px",borderRadius:8,border:`1px solid ${T.border2}`,background:"transparent",color:T.text3,fontSize:11.5,cursor:"pointer"}}>🔄 Tout réinitialiser</button>
+    </div>}
+  </div>;
+}
+
 
 // ═══ APP ═══
 export default function App(){
@@ -950,7 +1149,7 @@ export default function App(){
       </header>
 
       {/* SUB-NAV */}
-      {pid!=="english"&&<div style={{maxWidth:1300,margin:"0 auto",padding:"14px 20px 0",display:"flex",gap:5,overflowX:"auto"}}>
+      {pid!=="english"&&pid!=="calc"&&<div style={{maxWidth:1300,margin:"0 auto",padding:"14px 20px 0",display:"flex",gap:5,overflowX:"auto"}}>
         {SECTIONS.map(s=>{const lbl=pid==="cge"&&s.id==="referentiel"?"Bibliographie":pid==="cge"&&s.id==="annales"?"Ressources":s.label;const icn=pid==="cge"&&s.id==="referentiel"?"📚":pid==="cge"&&s.id==="annales"?"🔗":s.icon;return <button key={s.id} onClick={()=>switchSec(s.id)} style={{padding:"9px 16px",borderRadius:11,border:sec===s.id?`1.5px solid ${prog.color}35`:`1px solid ${T.border}`,background:sec===s.id?`${prog.color}0C`:T.surface,color:sec===s.id?T.text:T.text2,fontSize:12.5,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap",flexShrink:0}}>
           <span style={{fontSize:14}}>{icn}</span>{lbl}
           {s.id==="fiches"&&prog.fiches.length>0&&<Pill c={prog.color}>{prog.fiches.length}</Pill>}
@@ -961,7 +1160,8 @@ export default function App(){
       {/* CONTENT */}
       <main style={{maxWidth:1300,margin:"0 auto",padding:"22px 20px 80px",animation:"fu .32s ease-out"}} key={`${pid}-${sec}-${activeFiche?.id||""}-${activeQuizTheme?.id||""}-${quizMode?.id||""}`}>
         {pid==="english"&&<EnglishApp color={prog.color}/>}
-        {pid!=="english"&&<>
+        {pid==="calc"&&<GradeCalculator/>}
+        {pid!=="english"&&pid!=="calc"&&<>
           {sec==="referentiel"&&<RefView prog={prog} search={search}/>}
           {sec==="fiches"&&!activeFiche&&<FichesList prog={prog} search={search} done={completed} onPick={setAF}/>}
           {sec==="fiches"&&activeFiche&&<FicheDetail f={activeFiche} c={prog.color} isDone={!!completed[`${pid}-${activeFiche.id}`]} onDone={()=>{setCompleted(p=>({...p,[`${pid}-${activeFiche.id}`]:Date.now()}));if(studentName)logFiche(studentName,pid,activeFiche.id,activeFiche.title);}} onBack={()=>setAF(null)} onQuiz={(themeId)=>{const t=prog.quizThemes.find(x=>x.ficheId===themeId);if(t){setAQT(t);setSec("quiz");setAF(null)}}}/>}
