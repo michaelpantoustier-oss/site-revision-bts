@@ -887,78 +887,80 @@ function StudentBadge({name,onChangeName}){
 const BTS_GRILLES={
   abm:{name:"BTS ABM",color:"#5EB5FF",
     epreuves:[
-      {id:"e1", label:"Langue vivante étrangère (LV1)",code:"U1",coeff:2},
-      {id:"e2", label:"Mathématiques",code:"U2",coeff:1},
-      {id:"e3", label:"Sciences physiques et chimiques",code:"U3",coeff:2},
-      {id:"e41",label:"Biochimie",code:"U41",coeff:2,groupe:"E4 — Bases scientifiques et technologiques"},
-      {id:"e42",label:"Microbiologie",code:"U42",coeff:2,groupe:"E4 — Bases scientifiques et technologiques"},
-      {id:"e43",label:"Hématologie – Anatomopathologie – Immunologie",code:"U43",coeff:2,groupe:"E4 — Bases scientifiques et technologiques"},
-      {id:"e51",label:"Analyses de biochimie médicale",code:"U51",coeff:2.5,groupe:"E5 — Analyses de biologie médicale"},
-      {id:"e52",label:"Analyses de microbiologie médicale",code:"U52",coeff:3,groupe:"E5 — Analyses de biologie médicale"},
-      {id:"e53",label:"Analyses d'hématologie et anatomopathologie",code:"U53",coeff:1.5,groupe:"E5 — Analyses de biologie médicale"},
-      {id:"e6", label:"Soutenance de rapport de stages",code:"U6",coeff:3},
+      {id:"e1", label:"Langue vivante étrangère (LV1)",code:"U1",  coeff:2},
+      {id:"e2", label:"Mathématiques",                 code:"U2",  coeff:1},
+      {id:"e3", label:"Sciences physiques et chimiques",code:"U3", coeff:2},
+      {id:"e41",label:"Biochimie",                     code:"U41", coeff:2, prof:true, groupe:"E4 — Bases scientifiques et technologiques"},
+      {id:"e42",label:"Microbiologie",                 code:"U42", coeff:2, prof:true, groupe:"E4 — Bases scientifiques et technologiques"},
+      {id:"e43",label:"Hématologie – Anatomopathologie – Immunologie",code:"U43",coeff:2,prof:true,groupe:"E4 — Bases scientifiques et technologiques"},
+      {id:"e51",label:"Analyses de biochimie médicale",code:"U51", coeff:2.5,prof:true,groupe:"E5 — Analyses de biologie médicale"},
+      {id:"e52",label:"Analyses de microbiologie médicale",code:"U52",coeff:3,prof:true,groupe:"E5 — Analyses de biologie médicale"},
+      {id:"e53",label:"Analyses d'hématologie et d'anatomopathologie",code:"U53",coeff:1.5,prof:true,groupe:"E5 — Analyses de biologie médicale"},
+      {id:"e6", label:"Soutenance de rapport de stages",code:"U6", coeff:3, prof:true},
     ],
-    facultatives:[{id:"ef1",label:"Langue vivante 2",code:"UF1",coeff_fac:1}]},
+    facultatives:[
+      {id:"ef1",label:"Langue vivante 2",     code:"UF1",coeff_fac:1},
+      {id:"ef2",label:"Engagement étudiant",  code:"UF2",coeff_fac:1},
+    ]},
   bioalc:{name:"BTS BIOALC",color:"#C57AFF",
     epreuves:[
       {id:"e11",label:"Culture générale et expression",code:"U11",coeff:1,groupe:"E1 — Cultures et langues"},
-      {id:"e12",label:"Anglais",code:"U12",coeff:1,groupe:"E1 — Cultures et langues"},
-      {id:"e21",label:"Mathématiques",code:"U21",coeff:1,groupe:"E2 — Mathématiques et Physique-chimie"},
-      {id:"e22",label:"Physique-chimie",code:"U22",coeff:1,groupe:"E2 — Mathématiques et Physique-chimie"},
-      {id:"e3", label:"Gestion opérationnelle et documentaire du laboratoire",code:"U3",coeff:2},
-      {id:"e4", label:"Réalisation des analyses au laboratoire (contrôle qualité)",code:"U4",coeff:6},
-      {id:"e5", label:"Expertise au laboratoire — optimisation des méthodes de bioanalyse",code:"U5",coeff:4},
-      {id:"e6", label:"Relations professionnelles au laboratoire",code:"U6",coeff:2},
+      {id:"e12",label:"Anglais",               code:"U12",coeff:1,groupe:"E1 — Cultures et langues"},
+      {id:"e21",label:"Mathématiques",         code:"U21",coeff:1,groupe:"E2 — Mathématiques et Physique-chimie"},
+      {id:"e22",label:"Physique-chimie",       code:"U22",coeff:1,groupe:"E2 — Mathématiques et Physique-chimie"},
+      {id:"e3", label:"Gestion opérationnelle et documentaire du laboratoire",code:"U3",coeff:2,prof:true},
+      {id:"e4", label:"Réalisation des analyses au laboratoire (contrôle qualité)",code:"U4",coeff:6,prof:true},
+      {id:"e5", label:"Expertise au laboratoire — optimisation des méthodes de bioanalyse",code:"U5",coeff:4,prof:true},
+      {id:"e6", label:"Relations professionnelles au laboratoire",code:"U6",coeff:2,prof:true},
     ],
     facultatives:[
       {id:"ef1",label:"Langue vivante 2 (hors anglais)",code:"UF1",coeff_fac:1},
-      {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
+      {id:"ef2",label:"Engagement étudiant",           code:"UF2",coeff_fac:1},
     ]},
   ol:{name:"BTS OL",color:"#4AEAAC",
     epreuves:[
-      {id:"e1", label:"Culture générale et expression",code:"U1",coeff:2},
-      {id:"e2", label:"Langue vivante étrangère 1",code:"U2",coeff:2},
+      {id:"e1", label:"Culture générale et expression",code:"U1", coeff:2},
+      {id:"e2", label:"Langue vivante étrangère 1",    code:"U2", coeff:2},
       {id:"e3", label:"Économie et gestion de l'entreprise",code:"U3",coeff:5},
-      {id:"e41",label:"Mathématiques",code:"U41",coeff:2,groupe:"E4 — Systèmes optiques (total 8)"},
-      {id:"e42",label:"Optique géométrique et physique",code:"U42",coeff:3,groupe:"E4 — Systèmes optiques (total 8)"},
-      {id:"e43",label:"Étude technique des systèmes optiques",code:"U43",coeff:3,groupe:"E4 — Systèmes optiques (total 8)"},
-      {id:"e5", label:"Analyse du problème visuel",code:"U5",coeff:6},
-      {id:"e61",label:"Examen de vue et prises de mesures et adaptation",code:"U61",coeff:4,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
-      {id:"e62",label:"Contrôle d'équipement et réalisation technique",code:"U62",coeff:4,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
-      {id:"e63",label:"Activités en milieu professionnel",code:"U63",coeff:2,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
+      {id:"e41",label:"Mathématiques",                 code:"U41",coeff:2,prof:true,groupe:"E4 — Systèmes optiques (total 8)"},
+      {id:"e42",label:"Optique géométrique et physique",code:"U42",coeff:3,prof:true,groupe:"E4 — Systèmes optiques (total 8)"},
+      {id:"e43",label:"Étude technique des systèmes optiques",code:"U43",coeff:3,prof:true,groupe:"E4 — Systèmes optiques (total 8)"},
+      {id:"e5", label:"Analyse de la vision",          code:"U5", coeff:6,prof:true},
+      {id:"e61",label:"Examen de vue et prises de mesures et adaptation",code:"U61",coeff:4,prof:true,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
+      {id:"e62",label:"Contrôle d'équipement et réalisation technique",code:"U62",coeff:4,prof:true,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
+      {id:"e63",label:"Activités en milieu professionnel",code:"U63",coeff:2,prof:true,groupe:"E6 — Épreuve professionnelle de synthèse (total 10)"},
     ],
     facultatives:[
-      {id:"ef1",label:"Langue vivante 2",code:"UF1",coeff_fac:1},
+      {id:"ef1",label:"Langue vivante 2",   code:"UF1",coeff_fac:1},
       {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
     ]},
   prodent:{name:"BTS PRODENT",color:"#FFB259",
     epreuves:[
-      {id:"e1",label:"Sciences",code:"U1",coeff:2},
-      {id:"e2",label:"Culture générale et expression",code:"U2",coeff:1},
-      {id:"e3",label:"Anglais",code:"U3",coeff:1},
-      {id:"e4",label:"Élaboration d'un projet prothétique en concertation avec un praticien",code:"U4",coeff:3},
-      {id:"e5",label:"Fabrication d'une prothèse fonctionnelle et esthétique (méthode traditionnelle ou numérique)",code:"U5",coeff:6},
-      {id:"e6",label:"Management et entrepreneuriat en prothèse dentaire",code:"U6",coeff:3},
+      {id:"e1",label:"Sciences",                       code:"U1",coeff:2},
+      {id:"e2",label:"Culture générale et expression", code:"U2",coeff:1},
+      {id:"e3",label:"Anglais",                        code:"U3",coeff:1},
+      {id:"e4",label:"Élaboration d'un projet prothétique en concertation avec un praticien",code:"U4",coeff:3,prof:true},
+      {id:"e5",label:"Fabrication d'une prothèse fonctionnelle et esthétique",code:"U5",coeff:6,prof:true},
+      {id:"e6",label:"Management et entrepreneuriat en prothèse dentaire",code:"U6",coeff:3,prof:true},
     ],
     facultatives:[
-      {id:"ef1",label:"Langue vivante",code:"UF1",coeff_fac:0.5},
+      {id:"ef1",label:"Langue vivante",     code:"UF1",coeff_fac:0.5},
       {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
     ]},
   fed:{name:"BTS FED C",color:"#FF6370",
-    note:"⚠️ Coefficients estimés — vérifier sur le référentiel officiel BTS FED",
     epreuves:[
-      {id:"e1", label:"Culture générale et expression",code:"U11",coeff:2},
-      {id:"e2", label:"Langue vivante anglais",code:"U12",coeff:2},
-      {id:"e31",label:"Mathématiques",code:"U31",coeff:2,groupe:"E3 — Mathématiques et Sciences Physiques Appliquées"},
-      {id:"e32",label:"Sciences Physiques Appliquées",code:"U32",coeff:2,groupe:"E3 — Mathématiques et Sciences Physiques Appliquées"},
-      {id:"e41",label:"Bases technologiques des installations",code:"U41",coeff:4,groupe:"E4 — Étude des systèmes"},
-      {id:"e42",label:"Étude de cas industriel",code:"U42",coeff:3,groupe:"E4 — Étude des systèmes"},
-      {id:"e5", label:"Mise en œuvre des installations (CCF)",code:"U5",coeff:6},
-      {id:"e61",label:"Épreuve professionnelle E61",code:"U61",coeff:4,groupe:"E6 — Épreuve de synthèse professionnelle"},
-      {id:"e62",label:"Épreuve professionnelle E62",code:"U62",coeff:3,groupe:"E6 — Épreuve de synthèse professionnelle"},
+      {id:"e1", label:"Culture générale et expression",          code:"U1",  coeff:4},
+      {id:"e2", label:"Anglais",                                 code:"U2",  coeff:2},
+      {id:"e31",label:"Mathématiques",                           code:"U31", coeff:2,groupe:"E3 — Mathématiques et Physique-Chimie"},
+      {id:"e32",label:"Physique-Chimie",                         code:"U32", coeff:1,groupe:"E3 — Mathématiques et Physique-Chimie"},
+      {id:"e41",label:"Analyse et définition d'un système",      code:"U41", coeff:4,prof:true,groupe:"E4 — Étude des systèmes"},
+      {id:"e42",label:"Physique-chimie associées au système",    code:"U42", coeff:2,prof:true,groupe:"E4 — Étude des systèmes"},
+      {id:"e5", label:"Interventions sur les systèmes (CCF)",    code:"U5",  coeff:5,prof:true},
+      {id:"e61",label:"Conduite de projet",                      code:"U61", coeff:5,prof:true,groupe:"E6 — Épreuve professionnelle de synthèse"},
+      {id:"e62",label:"Rapport d'activités en milieu professionnel",code:"U62",coeff:3,prof:true,groupe:"E6 — Épreuve professionnelle de synthèse"},
     ],
     facultatives:[
-      {id:"ef1",label:"Langue vivante 2",code:"UF1",coeff_fac:1},
+      {id:"ef1",label:"Langue vivante",     code:"UF1",coeff_fac:1},
       {id:"ef2",label:"Engagement étudiant",code:"UF2",coeff_fac:1},
     ]},
 };
@@ -986,6 +988,18 @@ function GradeCalculator(){
   const moyAvecFac=allFilled?(sumPts+facBonus)/totalCoeff:null;
   const displayMoy=moyAvecFac??moyEnCours;
   const barColor=displayMoy==null?T.text3:displayMoy>=12?T.green:displayMoy>=10?T.yellow:T.red;
+  // Calcul moyenne épreuves professionnelles
+  const proEp=allEp.filter(e=>e.prof);
+  const enteredPro=proEp.filter(e=>grades[e.id]!==undefined&&grades[e.id]!=="");
+  const sumPtsPro=enteredPro.reduce((s,e)=>s+(parseFloat(grades[e.id])||0)*e.coeff,0);
+  const coeffPro=enteredPro.reduce((s,e)=>s+e.coeff,0);
+  const moyPro=coeffPro>0?sumPtsPro/coeffPro:null;
+  const totalCoeffPro=proEp.reduce((s,e)=>s+e.coeff,0);
+  const moyProFinale=enteredPro.length===proEp.length?sumPtsPro/totalCoeffPro:null;
+  const dispMoyPro=moyProFinale??moyPro;
+  // Rattrapage : 8 ≤ moy_gen < 10 ET moy_pro ≥ 10
+  const eligibleRattrapage=displayMoy!=null&&displayMoy>=8&&displayMoy<10&&dispMoyPro!=null&&dispMoyPro>=10;
+  const nonEligibleRattrapage=displayMoy!=null&&displayMoy>=8&&displayMoy<10&&dispMoyPro!=null&&dispMoyPro<10;
 
   const groups={};const ungrouped=[];
   allEp.forEach(e=>{if(e.groupe){if(!groups[e.groupe])groups[e.groupe]=[];groups[e.groupe].push(e);}else ungrouped.push(e);});
@@ -1054,7 +1068,14 @@ function GradeCalculator(){
             ✦ dont +{(facBonus/totalCoeff).toFixed(2)} pts apportés par les épreuves facultatives
           </div>}
           {moyRef!==null&&moyRef<10&&<div style={{fontSize:11.5,color:T.red,marginTop:4}}>
-            Il manque {((10-moyRef)*totalCoeff/totalCoeff).toFixed(2)} points/épreuve en moyenne pour atteindre 10
+            Il manque {(10-(moyRef??0)).toFixed(2)} points de moyenne pour atteindre 10
+          </div>}
+          {dispMoyPro!==null&&displayMoy!==null&&displayMoy<10&&<div style={{marginTop:8,padding:"10px 14px",borderRadius:9,border:`1.5px solid ${eligibleRattrapage?T.orange:T.red}20`,background:`${eligibleRattrapage?T.orange:T.red}08`}}>
+            <div style={{fontWeight:700,fontSize:12.5,color:eligibleRattrapage?T.orange:T.red,marginBottom:4}}>{eligibleRattrapage?"📋 Éligible aux épreuves de contrôle (rattrapage)":"❌ Non éligible aux épreuves de contrôle"}</div>
+            {eligibleRattrapage&&<div style={{fontSize:11.5,color:T.text2,lineHeight:1.5}}>Votre moyenne générale ({(displayMoy??0).toFixed(2)}/20) est comprise entre 8 et 10, et votre moyenne aux épreuves professionnelles ({(dispMoyPro??0).toFixed(2)}/20) est ≥ 10. Après délibération du jury, vous pourrez choisir 2 épreuves générales à repasser à l'oral.</div>}
+            {nonEligibleRattrapage&&<div style={{fontSize:11.5,color:T.text2,lineHeight:1.5}}>Votre moyenne générale est entre 8 et 10, mais votre moyenne aux épreuves professionnelles ({(dispMoyPro??0).toFixed(2)}/20) est inférieure à 10. Les deux conditions doivent être réunies pour accéder au rattrapage.</div>}
+            {displayMoy!==null&&displayMoy<8&&<div style={{fontSize:11.5,color:T.text2,lineHeight:1.5}}>La moyenne générale doit être ≥ 8/20 pour être éligible aux épreuves de contrôle.</div>}
+            {dispMoyPro!==null&&<div style={{fontSize:10.5,color:T.text3,marginTop:4}}>Moy. épreuves professionnelles : {(dispMoyPro??0).toFixed(2)}/20 (seuil requis : ≥ 10/20)</div>}
           </div>}
         </div>
         <div style={{textAlign:"right"}}>
