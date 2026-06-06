@@ -823,7 +823,7 @@ const PROGRAMS=[
   PROGRAM_PRODENT,
   {id:"english",short:"EN",name:"Anglais professionnel",color:"#3B82F6",icon:"🇬🇧",blocs:[],fiches:[],quizThemes:[],annales:[]},
   PROGRAM_CGE,
-  {id:"calc",short:"📊",name:"Estimateur de moyenne",color:"#F0E547",icon:"📊",blocs:[],fiches:[],quizThemes:[],annales:[]},
+  {id:"calc",short:"Moyenne",name:"Estimateur de moyenne BTS",color:"#F0E547",icon:"📈",blocs:[],fiches:[],quizThemes:[],annales:[]},
 ];
 
 const SECTIONS=[{id:"referentiel",label:"Référentiel",icon:"📋"},{id:"fiches",label:"Fiches",icon:"📝"},{id:"quiz",label:"Quiz",icon:"🎯"},{id:"annales",label:"Annales",icon:"📚"},{id:"progression",label:"Progression",icon:"📊"}];
