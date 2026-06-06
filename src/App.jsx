@@ -1016,8 +1016,8 @@ function GradeCalculator(){
         <div style={{fontSize:10,color:T.text3,marginTop:1}}>{e.code} · coeff {e.coeff_fac??e.coeff}{fac?" · points > 10 comptent":""}</div>
       </div>
       {pts!==null&&<div style={{fontSize:10.5,fontWeight:700,color:ptsColor,minWidth:38,textAlign:"right",flexShrink:0}}>{fac&&pts>0?"+":""}{pts.toFixed(1)}pts</div>}
-      <input type="number" min="0" max="20" step="0.5" placeholder="—" value={v}
-        onChange={ev=>setGrade(e.id,ev.target.value)}
+      <input type="text" inputMode="decimal" placeholder="—" value={v}
+        onChange={ev=>{const val=ev.target.value.replace(',','.');if(val===''||val==='-'||/^\d{0,2}([.,]\d{0,1})?$/.test(val))setGrade(e.id,val);}}
         style={{width:58,padding:"6px 7px",borderRadius:7,border:`1.5px solid ${ok&&v!==''?(fac?(pts>0?T.green:T.border2):(n>=10?T.green:T.red)):T.border2}`,background:T.card,color:T.text,fontSize:13,fontWeight:700,textAlign:"center",outline:"none",flexShrink:0}}/>
     </div>;
   };

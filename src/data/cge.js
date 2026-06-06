@@ -236,7 +236,7 @@ export const PROGRAM_CGE = {
   short:"CGE 2027",
   name:"Culture Générale et Expression — Le vrai du faux",
   color:"#F59E0B",
-  icon:"📖",
+  icon:"🗣",
   blocs:[
     {id:"cge_b1",title:"Bloc 1 — Problématique et enjeux contemporains",unit:"CGE",
       competences:[
